@@ -81,7 +81,7 @@
 			
 			function getyear(d)
 			{
-				return d.Year;
+				return d.year;
 			}
 			
 			function gettemperature(d)
@@ -127,6 +127,10 @@
 				
 				
 			}
+			var div = d3.select("body").append("div")
+					.attr("class", "tooltip")
+					.style("opacity", 0);	
+					
 			var canvas = d3.select("body").append("svg")
 				.attr("width",width)
 				.attr("height",height)
@@ -194,26 +198,39 @@
 					.startAngle(function(d){return calc_startang(d);})
 					.endAngle(function(d){return (calc_startang(d)+(2*Math.PI/10));});
 			
-			datao.forEach(function(d){	
-							group.append("path")
-								.attr("d", arc(d))
-								.style("fill",retColor(d));
-							}
-						
-						);
+					group.selectAll("path")
+								.data(datao)
+								.enter()
+								.append("path")
+									.attr("d", arc)
+									.style("fill",retColor)
+									.on("mouseover",funcmouseover)
+									.on("mouseout", funcmouseout);
 					
 			function retColor(d)
 			{
-				console.log(d.year+" "+d.temperature+" "+lengthScale(d.temperature));
-				
 				return lengthScale(d.temperature);
 			}
-					 	
-						
-							
-					
-						
-			}});			
+			function funcmouseover(d)
+           {
+				var pageX = d3.event.pageX;
+				var pageY = d3.event.pageY;
+               div.transition()
+                       .duration(100)
+                       .style("opacity", .9);
+               div.html("Year:"+ getyear(d)+"<br>AverageTemperature:" +gettemperature(d))
+                       .style("left", (pageX) + "px")
+                       .style("top", (pageY - 28) + "px");
+           }
+
+           function funcmouseout(d)
+           {
+               div.transition()
+                       .duration(5000)
+                       .style("opacity", 0);
+           }
+				
+	}});			
 				
         </script>
     </body>
