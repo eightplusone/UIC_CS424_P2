@@ -56,7 +56,7 @@
 					
 					//push duration for each data point to be converted into scale
 					for (var i = 0; i < datao.length; i++) {
-							mineTemp.push(parseInt(datao[i].temperature));
+							mineTemp.push(parseFloat(datao[i].temperature));
 							
 					}
 					mineTemp.sort(function (a, b) {
@@ -72,9 +72,11 @@
 								});
 					//to control the length of the bars
 					var mintemp = d3.min(mineTemp);
+					console.log(mintemp);
 					var maxtemp = d3.max(mineTemp);
-					var lengthScale = d3.scaleLinear().domain([mintemp,maxtemp])
-										.range([0,80]);   
+					console.log(maxtemp);
+					var lengthScale = d3.scaleQuantize().domain([mintemp,maxtemp])
+										.range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);   
 											
 			
 			function getyear(d)
@@ -86,31 +88,7 @@
 			{
 				return d.temperature;
 			}
-			
-			/*function funcmouseover(d)
-			{
-					/*
-						mouse over function to display tooltip
-					
-					
-					div.transition()
-						.duration(100)	
-						.style("opacity", .9);
-					div.html(getTime(d) + ", " + getDay(d) +", " + getDate(d) +  " <br> " + getTitle(d)+ " <br>" + getGenre(d)+ ", Watched on:" +getDevice(d))		
-						.style("left", (d3.event.pageX) + "px")             
-						.style("top", (d3.event.pageY - 28) + "px");
-			}
-				
-			function funcmouseout(d)
-			{
-					/*
-						mouseout function to take care of tooltip
-					
-				div.transition()		
-					.duration(5000)		
-					.style("opacity", 0);
-			}*/
-				
+						
 			function calc_index(d)
 			{
 				
@@ -168,10 +146,7 @@
 						.attr("height", "300");	
 					
 			//for legend
-			//var color = ["#ffffcc","#ffff99","#ffff66"];
-			var daycolor = ["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"];
-			var colorscale = d3.scaleOrdinal().domain([mintemp,maxtemp]).range(daycolor);
-			
+						
 			var radius = Math.min(max_w,max_h)/2;
 				
 			
@@ -229,9 +204,9 @@
 					
 			function retColor(d)
 			{
-				console.log(d.year+" "+d.temperature+" "+colorscale(d.temperature));
+				console.log(d.year+" "+d.temperature+" "+lengthScale(d.temperature));
 				
-				return colorscale(d.temperature);
+				return lengthScale(d.temperature);
 			}
 					 	
 						
