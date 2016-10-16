@@ -1,13 +1,7 @@
-#time-slider {
-  position: absolute;
-  bottom: 0;
-  left: 7.5%;
-  height: 10%;
-  width: 85%;
-  background-color: black;
-  padding: 5px;
-  margin: 5px;
-  color: white;
-  text-align: center;
-  vertical-align: center;
+.menu {
+  height: 15%;
+}
+
+.main {
+  height: 85%;
 }
