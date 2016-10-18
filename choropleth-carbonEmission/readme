@@ -1,5 +1,6 @@
 the version is not the final one.
-the basic framework has been created for 1 year.
+the basic framework has been created for 1 year
+the bubbles are being rendered scaling to the carbon emission of the that specfic country
 
 Need to pull the data from 50 year and render individually.
 The slider functionality is still remaining.
