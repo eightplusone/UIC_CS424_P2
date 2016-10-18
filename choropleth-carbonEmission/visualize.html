@@ -56,7 +56,7 @@
                             return rScale(d.temperature);
                         })
                         .attr("fill", "red");
-            }
+            };
 
             var format = d3.time.format("%Y");
             d3.csv("worldavg.txt",function (d) {
