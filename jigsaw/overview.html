@@ -23,7 +23,7 @@
 			
 	var mineTemp = new Array();		
 	
-	d3.json("tempbycountry1.json", function(error,datao) {
+	d3.json("tempebycountry.json", function(error,datao) {
         if (error) {  //If error is not null, something went wrong.
             console.log(error);  //Log the error.
         } else {
@@ -32,7 +32,7 @@
                 mineTemp.push(parseFloat(datao[i].Temperature));
 				
             }
-           /* mineTemp.sort(function (a, b) {
+           mineTemp.sort(function (a, b) {
 
                 if (a.year > b.year) {
                     return 1;
@@ -42,7 +42,7 @@
                 }
                 // a must be equal to b
                 return 0;
-            });*/
+            });
             //to control the length of the bars
             var mintemp = d3.min(mineTemp);
            
@@ -66,8 +66,13 @@
 					.projection(projection);
       var g = svg.append("g")
 				.attr("transform","translate(150,300)");
-		var year= 2013;		
-		d3.json("world_countries.json", function(json) {
+		var year= 2012;		
+		d3.json("world_countries.json", function(error,json) {
+			if(error)
+			{
+				console.log(error);
+			}
+			else{
             //Merge the temperature data and country JSON
             //Loop through once for each temperature data value
 			
@@ -111,7 +116,7 @@
                             return "#ccc";
                         }
                     });
-			});		
+			}});		
       
      
       }
