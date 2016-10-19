@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Temperature Burst!!</title>
+    <style>
+
+        .legendday {
+            font-size: 12px;
+        }
+        .legend {
+            font-size: 12px;
+        }
+        rect {
+            cursor: pointer;
+            stroke-width: 2;
+        }
+        rect.select1{
+            fill: blue;
+        }
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 2px;
+            font-size: 12pt;
+            font-family: "Georgia","Times New Roman";
+           
+
+        }
+
+
+
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+</head>
+<body>
+
+<div style="font-family:Brown,helvetica,sans-serif;font-size:28px;position:relative;top:40px;left:500px">
+    World Average temperature trends in past 50 years
+</div>
+<script type="text/javascript">
+
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
+            width = 1650 - margin.left - margin.right,
+            height = 1000 - margin.top - margin.bottom;
+
+    var max_w = 600;
+    var max_h = 600;
+
+    var mineTemp = new Array();
+    d3.csv("worldavg.txt", function(error,datao) {
+        if (error) {  //If error is not null, something went wrong.
+            console.log(error);  //Log the error.
+        } else {
+
+            //push duration for each data point to be converted into scale
+            for (var i = 0; i < datao.length; i++) {
+                mineTemp.push(parseFloat(datao[i].temperature));
+
+            }
+            mineTemp.sort(function (a, b) {
+
+                if (a.year > b.year) {
+                    return 1;
+                }
+                if (a.year < b.year) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
+            //to control the length of the bars
+            var mintemp = d3.min(mineTemp);
+            console.log(mintemp);
+            var maxtemp = d3.max(mineTemp);
+            console.log(maxtemp);
+            var lengthScale = d3.scaleQuantize()
+                    .domain([mintemp,maxtemp])
+                    .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
+
+
+
+
+            function getyear(d)
+            {
+                return d.year;
+            }
+
+            function gettemperature(d)
+            {
+                return d.temperature;
+            }
+
+            function calc_index(d)
+            {
+
+                var year = parseInt(d.year);
+                var sector;
+                if(year >= 1965 && year <= 1974)
+                {
+                    var year_val = year - 1965;
+                    sector_start= year_val*(2*Math.PI)/10;
+                    return 5;
+                }
+                else if(year >= 1975 && year <= 1984)
+                {
+                    var year_val = year - 1975;
+                    sector_start= year_val*(2*Math.PI)/10;
+                    return 4;
+                }
+                else if(year >= 1985 && year <= 1994)
+                {
+                    var year_val = year - 1985;
+                    sector_start= year_val*(2*Math.PI)/10;
+                    return 3;
+                }
+                else if(year >= 1995 && year <= 2004)
+                {
+                    var year_val = year - 1995;
+                    sector_start= year_val*(2*Math.PI)/10;
+                    return 2;
+                }
+                else if(year >= 2005 && year <= 2014)
+                {
+                    var year_val = year - 2005;
+                    sector_start= year_val*(2*Math.PI)/10;
+                    return 1;
+                }
+
+
+            }
+            var div = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
+
+            var canvas = d3.select("body").append("svg")
+                    .attr("width",width)
+                    .attr("height",height)
+                    .attr("position", "relative")
+
+            canvas.append("g").append("rect")
+                    .attr("width",width)
+                    .attr("height",height)
+                    .style("fill","transparent")
+                    .style("stroke","black")
+                    .style("stroke-width","1");
+
+
+            var group = canvas.append("g")
+                    .attr("transform","translate(700,350)")
+                    .attr("width", "300")
+                    .attr("height", "300")
+                    .attr("class", "legendLinear");
+
+            //for legend
+            var legend = group.selectAll("legend")
+                    .data(lengthScale.ticks(9).slice(1).reverse())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d, i) { return "translate(-600," + i * 30 + ")"; })
+
+            legend.append("rect")
+                    .attr("width", 40)
+                    .attr("height", 40)
+                    .style("fill", lengthScale);
+
+            canvas.append("text")
+                    .attr("x", width - 1375)
+                    .attr("y", 650)
+                    .attr("dy", ".35em")
+                    .style("font-family", "Georgia")
+                    .text("Temperature");
+            canvas.append("text")
+                    .attr("x", width - 1305)
+                    .attr("y", 620)
+                    .attr("dy", ".35em")
+                    .style("font-family", "Georgia")
+                    .text("19 C");
+            canvas.append("text")
+                    .attr("x", width - 1305)
+                    .attr("y", 355)
+                    .attr("dy", ".35em")
+                    .style("font-family", "Georgia")
+                    .text("22 C");
+            //zoom
+
+            var radius = Math.min(max_w,max_h)/2;
+
+            function calc_startang(d)
+            {
+                var cir_index = calc_index(d);
+                if(cir_index ==5)
+                {
+                    var year_val = parseInt(d.year) - 1965;
+                    var start_ang = year_val*(2*Math.PI)/10;
+                    return start_ang;
+                }
+                else if(cir_index ==4)
+                {
+                    var year_val = parseInt(d.year) - 1975;
+                    var start_ang = year_val*(2*Math.PI)/10;
+                    return start_ang;
+
+                }
+                else if(cir_index ==3)
+                {
+                    var year_val = parseInt(d.year) - 1985;
+                    var start_ang = year_val*(2*Math.PI)/10;
+                    return start_ang;
+
+                }
+                else if(cir_index ==2)
+                {
+                    var year_val = parseInt(d.year) - 1995;
+                    var start_ang = year_val*(2*Math.PI)/10;
+                    return start_ang;
+
+                }
+                else if(cir_index ==1)
+                {
+                    var year_val = parseInt(d.year) - 2005;
+                    var start_ang = year_val*(2*Math.PI)/10;
+                    return start_ang;
+
+                }
+            }
+            var arc = d3.arc()
+                    .innerRadius(function(d){return(radius -(calc_index(d)*40));})
+                    .outerRadius(function(d){return (radius-(calc_index(d)-1)*40);})
+                    .startAngle(function(d){return calc_startang(d);})
+                    .endAngle(function(d){return (calc_startang(d)+(2*Math.PI/10));});
+
+            var path = group.selectAll("path")
+                    .data(datao)
+                    .enter()
+                    .append("path")
+                    .attr("d", arc)
+                    .style("fill",retColor)
+                    .on("mouseover",funcmouseover)
+                    .on("mouseout", funcmouseout);
+
+            function retColor(d)
+            {
+                return lengthScale(d.temperature);
+            }
+            function funcmouseover(d)
+            {
+                var pageX = d3.event.pageX;
+                var pageY = d3.event.pageY;
+                div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                div.html("Year: "+ getyear(d)+"<br>Avg Temp: " +gettemperature(d))
+						.style("left", (width/2-100) + "px")
+                        .style("top", (height/2-40) + "px");
+            }
+
+            function funcmouseout(d)
+            {
+                div.transition()
+                        .duration(2)
+                        .style("opacity", 0);
+            }
+
+        }});
+
+</script>
+</body>
+</html>
