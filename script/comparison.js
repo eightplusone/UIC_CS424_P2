@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
   d3.queue()
-    .defer(d3.json, "./data/tempbycountry1.json")
+    .defer(d3.json, "./data/tempbycountry.json")
     //.defer(d3.json, "./data/carbongasByYearByCountry.json")
     //.defer(d3.json, "./data/energyfossilpercountryperyear.json")
     //.defer(d3.json, "./data/carbonSolidByYearByCountry.json")
@@ -14,6 +14,7 @@ $(document).ready(function(){
 
     let width = window.innerWidth,
         height = window.innerHeight;
+    console.log(width);
 
     // Responsive svg
     let svg = d3.select("body").select("div.main").append("svg")
@@ -23,12 +24,12 @@ $(document).ready(function(){
       .attr("preserveAspectRatio","xMinYMin")
 
     // Get the range of temperature (on entire dataset)
-    let temp = [];
+    let year = [];
     temperature.forEach(function(t, i) {
-      temp.push(t.Temperature);
+      year.push(t.Year);
     });
-    console.log(d3.min(temp));
-    console.log(d3.max(temp));
+    let slider_min = d3.min(year);
+    let slider_max = d3.max(year);
 
     // Sky
     let sky_color = d3.rgb("#b4e6f9");
@@ -36,20 +37,20 @@ $(document).ready(function(){
     svg.style("background-color", sky_color);
 
     // sea
-    let sea_lvl = Math.floor(height*0.3);
+    let sea_lvl = height*0.3;
     svg.append("rect")
       .attr("x", 0)
-      .attr("y", height-sea_lvl)
-      .attr("width", width)
+      .attr("y", height - sea_lvl)
+      .attr("width", width*1.2)
       .attr("height", sea_lvl)
       .attr("fill", "#19bae5");
 
     // island
     svg.append("rect")
-      .attr("x", Math.floor(width*0.1))
-      .attr("y", Math.floor(height*0.5))
-      .attr("width", Math.floor(width*0.8))
-      .attr("height", Math.floor(height*0.5))
+      .attr("x", width*0.1)
+      .attr("y", height*0.5)
+      .attr("width", width*0.8)
+      .attr("height", height*0.5)
       .attr("fill", "#845346");
 
     // factories
@@ -64,49 +65,105 @@ $(document).ready(function(){
       // factory needs to move 6% to the right.
       //
       // Also, the left chimney needs to shifted to the right a little bit.
-      let x = Math.floor(width*0.18 + i*width*0.06 + width*0.005);
+      let x = width*0.18 + i*width*0.06 + width*0.005;
 
       // To make it easier, I assume the bounder of each factory takes 4% of
       // each side
-      let y = Math.floor(height*0.46);
+      let y = height*0.46;
 
       let sketch = "M ";
       sketch += x.toString() + "," + y.toString();
       sketch += " L ";
-      sketch += x.toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += x.toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x - Math.floor(width*0.005)).toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += (x - width*0.005).toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x - Math.floor(width*0.005)).toString() + "," + (y + Math.floor(height*0.045)).toString();
+      sketch += (x - width*0.005).toString() + "," + (y + height*0.045).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.035)).toString() + "," + (y + Math.floor(height*0.045)).toString();
+      sketch += (x + width*0.035).toString() + "," + (y + height*0.045).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.035)).toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += (x + width*0.035).toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.015)).toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += (x + width*0.015).toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.015)).toString() + "," + y.toString();
+      sketch += (x + width*0.015).toString() + "," + y.toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.010)).toString() + "," + y.toString();
+      sketch += (x + width*0.010).toString() + "," + y.toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.010)).toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += (x + width*0.010).toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.005)).toString() + "," + (y + Math.floor(height*0.015)).toString();
+      sketch += (x + width*0.005).toString() + "," + (y + height*0.015).toString();
       sketch += " L ";
-      sketch += (x + Math.floor(width*0.005)).toString() + "," + y.toString();
+      sketch += (x + width*0.005).toString() + "," + y.toString();
       sketch += " L ";
       sketch += x.toString() + "," + y.toString();
 
 
       svg.append("path")
         .attr("d", sketch)
+        .attr("transform", "translate(" + width*0.05 + ",0)")
         .style("fill", "#000000");
     }
-
-    // time slider
 
     // buttons
 
     // year
+    let year_title = svg.append("year_title")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("width", "20%")
+      .attr("height", "10%")
+      .attr("fill", "#ffffff");
+
+    // time slider
+    // Reference: https://bl.ocks.org/mbostock/6452972
+    let x = d3.scaleLinear()
+      .domain([slider_min, slider_max])
+      .range([width*0.20, width*0.80])
+      .clamp(true);
+
+    let slider = svg.append("g")
+      .attr("class", "slider")
+      .attr("transform", "translate(0," + height*0.9 + ")");
+
+    slider.append("line")
+      .attr("class", "track")
+      .attr("x1", x.range()[0])
+      .attr("x2", x.range()[1])
+    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+      .attr("class", "track-inset")
+    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+      .attr("class", "track-overlay")
+      .call(d3.drag()
+          .on("start.interrupt", function() { slider.interrupt(); })
+          .on("start drag", function() { hue(x.invert(d3.event.x)); }));
+
+    slider.insert("g", ".track-overlay")
+      .attr("class", "ticks")
+      .attr("transform", "translate(0," + 18 + ")")
+    .selectAll("text")
+    .data(x.ticks(20))
+    .enter().append("text")
+      .attr("x", x)
+      .attr("text-anchor", "middle")
+      .text(function(d) { return "'" + d%100; });
+
+    var handle = slider.insert("circle", ".track-overlay")
+        .attr("class", "handle")
+        .attr("r", 9);
+
+    slider.transition() // Gratuitous intro!
+        .duration(750)
+        .tween("hue", function() {
+          var i = d3.interpolate(0, 70);
+          return function(t) { hue(i(t)); };
+        });
+
+    function hue(h) {
+      h = Math.round(h);
+      handle.attr("cx", x(h));
+      console.log(h, x(h));
+      svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+    }
   }
 });
