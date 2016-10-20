@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v0.min.js"></script>
+    <style>
+        .bubble {
+            fill-opacity: .5;
+            stroke: #fff;
+            stroke-width: .5px;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        function render (datao) {
+            var margin = {top: 100, right: 100, bottom: 100, left: 100},
+                    width = 1650 - margin.left - margin.right,
+                    height = 1000 - margin.top - margin.bottom;
+
+            var svg=d3.select("body")
+                    .append("svg")
+                    .attr("width" , width)
+                    .attr("height", height)
+                    .append("g")
+                    .attr('class', 'map');
+
+            var projection = d3.geoMercator();
+
+            var path = d3.geoPath()
+                    .projection(projection);
+
+            var g = svg.append("g")
+                    .attr("transform","translate(150,300)");
+
+            var year_taken = 2008;
+
+            function plot(data_json) {
+                var dataTemperature;
+                for(var i=0; i<datao.length;i++){
+                    var dataCountry = datao[i].Country;
+                    dataTemperature = parseFloat(datao[i].Temperature);
+                    var dataYear = parseInt(datao[i].Year);
+
+
+                    if (dataYear==year_taken){
+                        for(var j=0; j<data_json.features.length;j++){
+                            var jsonCountry = data_json.features[j].properties.name;
+                            if (dataCountry==jsonCountry){
+                                data_json.features[j].properties.value = dataTemperature;
+                                data_json.features[j].properties.year = dataYear;
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                var map =g.selectAll("path")
+                        .data(data_json.features)
+                        .enter()
+                        .append("path")
+                        .attr("d", path)
+                        .style('fill','orange')
+                        .style('stroke-width',0.5);
+
+                g.selectAll("path").each(function(d,i) {
+                    var centroid = path.centroid(d);
+                    data_json.features[i].properties.centroid = centroid;
+                });
+
+                var rMin=d3.min(datao,function (d) {return d.Temperature;});
+                var rMax=d3.max(datao,function (d) {return d.Temperature;});
+                console.log(rMin); console.log(rMax);
+                var rScale= d3.scaleSqrt().domain([0, 1e6])
+                        .range([0, 15]);
+                console.log(rScale(-22.536416666666668))
+                console.log(rScale(33.02025))
+
+                var cir=g.append("g")
+                        .selectAll("circle")
+                        .data(data_json.features)
+                        .enter()
+                        .append("circle")
+                        .attr("cx", function (d) {
+                            return d.properties.centroid[0];
+                        })
+                        .attr("cy", function (d) {
+                            return d.properties.centroid[1];
+                        })
+                        /*.attr("r", function (d) {
+                            console.log("Temp:"+d.Temperature);
+                            console.log("Scaled one :"+rScale(d.Temperature));
+                            return rScale(dataTemperature);
+                        })*/
+                        .attr("fill", "red");
+
+                cir.data(datao)
+                        .attr("r", function (d) {
+                            console.log("Temp:"+d.Temperature);
+                            console.log("Scaled one :"+rScale(d.Temperature));
+                            console.log(d.Country);
+                            return rScale(d.Temperature);
+                        })
+            }
+            d3.json("world_countries.json",plot)
+
+        }
+        d3.json("tempbycountry1.json",render);
+
+    </script>
+</body>
+</html>
