@@ -27,7 +27,7 @@ $(document).ready(function(){
 	function render(year){
 	 var mineobj = new Array();
      var mineTemp = new Array();		
-	 d3.json("tempbycountry.json", function(error,datao) {
+	 d3.json("./data/tempbycountry.json", function(error,datao) {
         if (error) {  //If error is not null, something went wrong.
             console.log(error);  //Log the error.
         } else {
@@ -105,7 +105,7 @@ $(document).ready(function(){
                     .text("22 C");
             
 				
-		d3.json("world_countries.json", function(error,json) {
+		d3.json("./data/world_countries.json", function(error,json) {
 			if(error)
 			{
 				console.log(error);
