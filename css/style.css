@@ -39,3 +39,33 @@
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
 }
+
+.legendday {
+            font-size: 12px;
+        }
+		
+    .legend {
+            font-size: 12px;
+        }	
+	 div.tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 2px;
+            font-size: 12pt;
+			font-family: "Georgia","Times New Roman";
+            background: lightsteelblue;
+
+        }
+	
+	.path {
+		fill:none;
+	}
+		
+		
+		
+.path:hover {
+	stroke: #fff;
+	stroke-width: 2px;
+ }
+	
+	
