@@ -2,56 +2,105 @@ $(document).ready(function(){
 
   d3.queue()
     .defer(d3.json, "./data/tempbycountry.json")
-    //.defer(d3.json, "./data/carbongasByYearByCountry.json")
-    //.defer(d3.json, "./data/energyfossilpercountryperyear.json")
-    //.defer(d3.json, "./data/carbonSolidByYearByCountry.json")
-    //.defer(d3.json, "./data/data.json")
+    .defer(d3.json, "./data/carboncumlativeByYearByCountry.json")
+    .defer(d3.json, "./data/energypercountryperyear.json")
     .await(comparison);
 
-  //function comparison(error, temp, gas, fossil, coal) {
-  function comparison(error, temperature) {
+  function comparison(error, temperature, carbon, energy) {
     if(error) throw error;
 
     let width = window.innerWidth,
         height = window.innerHeight;
-    console.log(width);
-
+    
     // Responsive svg
     let svg = d3.select("body").select("div.main").append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox","0 0 " + Math.min(width,height) + " " + Math.min(width,height))
-      .attr("preserveAspectRatio","xMinYMin")
+      .attr("preserveAspectRatio","xMinYMin");
 
-    // Get the range of temperature (on entire dataset)
+    // Get the range of year & temperature
     let year = [];
+    let avgtemp = [];
+    let numCountry = [];
+
     temperature.forEach(function(t, i) {
-      year.push(t.Year);
+      let yr = t.Year;
+      if (year.indexOf(yr) == -1)
+        year.push(yr);
+
+      // Check for existences
+      if (typeof avgtemp[yr] === "undefined")
+        avgtemp[yr] = 0;
+      if (typeof numCountry[yr] === "undefined")
+        numCountry[yr] = 0;
+
+      // Only count non-zero temperatures
+      if (t.Temperature != 0) {
+        avgtemp[yr] += t.Temperature;
+        numCountry[yr]++;
+      }
     });
-    let slider_min = d3.min(year);
-    let slider_max = d3.max(year);
+
+    // Calculate the average
+    avgtemp.forEach(function(t,i) {
+      avgtemp[i] = avgtemp[i] / numCountry[i];
+    });   
+
+    let year_min = d3.min(year);
+    let year_max = d3.max(year);
+    let avgtemp_min = d3.min(avgtemp);
+    let avgtemp_max = d3.max(avgtemp);
+
+    // Currently selected year. By default, I set it at the lowest year.
+    let curr_year = year_min;
+
+    // Scale to convert temperature to color
+    let temp2color = d3.scaleLinear()
+      .domain([avgtemp_min, avgtemp_max])
+      .range([70, 0])
+      .clamp(true);
+
+    // Scale to convert temperature to sea level
+    let temp2sea = d3.scaleLinear()
+      .domain([avgtemp_min, avgtemp_max])
+      .range([0.1, 0.4])
+      .clamp(true);
+
+    // Get the range of carbon dioxide emission
+    let co2 = [];
+    carbon.forEach(function(c, i) {
+      co2.push(c.Carbon);
+    });
+    let co2_min = d3.min(co2);
+    let co2_max = d3.max(co2);
 
     // Sky
-    let sky_color = d3.rgb("#b4e6f9");
-    //sky_color = sky_color.darker();
-    svg.style("background-color", sky_color);
+    let sky = svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", d3.rgb("#b4e6f9"))
+      .attr("id", "sky");
+    //svg.style("background-color", d3.hsl(temp2color[avgtemp[curr_year]], 0.8, 0.7));
 
     // sea
-    let sea_lvl = height*0.3;
-    svg.append("rect")
+    let sea = svg.append("rect")
       .attr("x", 0)
-      .attr("y", height - sea_lvl)
-      .attr("width", width*1.2)
-      .attr("height", sea_lvl)
+      .attr("y", height*0.7)
+      .attr("width", width)
+      .attr("height", height*0.3)
       .attr("fill", "#19bae5");
 
     // island
     svg.append("rect")
-      .attr("x", width*0.1)
+      .attr("x", width*0.05)
       .attr("y", height*0.5)
-      .attr("width", width*0.8)
+      .attr("width", width*0.9)
       .attr("height", height*0.5)
-      .attr("fill", "#845346");
+      .attr("fill", "#845346")
+      .attr("id", "island");
 
     // factories
     for (i=0; i<9; i++) {
@@ -107,63 +156,62 @@ $(document).ready(function(){
 
     // buttons
 
-    // year
-    let year_title = svg.append("year_title")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("width", "20%")
-      .attr("height", "10%")
-      .attr("fill", "#ffffff");
+    // year title on top
+    let year_display = svg.append("text")
+      .text(curr_year)
+      .attr("id", "year-display")
+      .attr("x", width*0.48)
+      .attr("y", height*0.05)
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline","central")
+      .attr("font-size", "20px")
+      .attr("fill", "black");
 
     // time slider
-    // Reference: https://bl.ocks.org/mbostock/6452972
-    let x = d3.scaleLinear()
-      .domain([slider_min, slider_max])
-      .range([width*0.20, width*0.80])
+    // Reference: http://bl.ocks.org/d3noob/10632804
+    let slider = d3.select("#nRadius");
+
+    let timeScale = d3.scaleLinear()
+      .domain([year_min, year_max])
+      .range([width*0.1, width*0.9])
       .clamp(true);
 
-    let slider = svg.append("g")
-      .attr("class", "slider")
-      .attr("transform", "translate(0," + height*0.9 + ")");
+    let timeAxis = d3.axisBottom(timeScale)
+      .ticks(49);
 
-    slider.append("line")
-      .attr("class", "track")
-      .attr("x1", x.range()[0])
-      .attr("x2", x.range()[1])
-    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-      .attr("class", "track-inset")
-    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-      .attr("class", "track-overlay")
-      .call(d3.drag()
-          .on("start.interrupt", function() { slider.interrupt(); })
-          .on("start drag", function() { hue(x.invert(d3.event.x)); }));
+    let sliderContainer = svg.append("g")
+      .attr("class", "slider-container");
 
-    slider.insert("g", ".track-overlay")
-      .attr("class", "ticks")
-      .attr("transform", "translate(0," + 18 + ")")
-    .selectAll("text")
-    .data(x.ticks(20))
-    .enter().append("text")
-      .attr("x", x)
-      .attr("text-anchor", "middle")
-      .text(function(d) { return "'" + d%100; });
+    timeAxis(sliderContainer);
+    sliderContainer
+      .attr("transform", "translate(0," + height*0.89 + ")");
 
-    var handle = slider.insert("circle", ".track-overlay")
-        .attr("class", "handle")
-        .attr("r", 9);
+    svg.selectAll(".slider-container text")
+      .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)");
 
-    slider.transition() // Gratuitous intro!
-        .duration(750)
-        .tween("hue", function() {
-          var i = d3.interpolate(0, 70);
-          return function(t) { hue(i(t)); };
-        });
+    // when the input range changes update the circle 
+    slider.on("input", function() {
+      update(+this.value);
+    });
 
-    function hue(h) {
-      h = Math.round(h);
-      handle.attr("cx", x(h));
-      console.log(h, x(h));
-      svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+    // Initial starting year
+    update(1965);
+
+    // update the elements
+    function update(yr) {
+      // change sea level
+      sea.transition()
+        .attr("y", height - height * temp2sea(avgtemp[yr]))
+        .attr("height", height * temp2sea(avgtemp[yr]))
+        .duration(1000);
+
+      // change sky color
+      sky.transition()
+        .attr("fill", d3.hsl(temp2color(avgtemp[yr]), 0.8, 0.7))
+        .duration(1000);
+
+      curr_year = yr;
+      d3.select("#year-display").text(curr_year);
     }
   }
 });
