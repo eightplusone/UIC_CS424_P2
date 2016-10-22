@@ -1,12 +1,13 @@
 <header>
-  <title>Project 1</title>
+  <title>Project 2</title>
   <meta name="description" content="Project 2 - Group 4">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="script/index.js"></script>
+  <script src="script/index.js"></script>  
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">        
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </header>
@@ -17,8 +18,18 @@
       <div class="col-xs-4"><center><a href="country.html"><h4>Individual Country</h4></a></center></div>
       <div class="col-xs-4"><center><a href="comparison.html"><h4>Comparison</h4></a></center></div>
   </div>
-
+  
   <!-- Main content -->
-  <div class="main"></div>
+  <div class="main">
+  
+  </div>
+  <form id="myForm">
+        <select id="selectIndicator">
+			<option value = "temperature">Temperature(degree Celcius)</option>
+			<option value = "energy">Energy Consumption(Kg of Oil Equivalent per capita)</option>
+			<option value = "temperature">Carbon Emissions (Metric Tons per Capita)</option>
+      </select>
+    </form>
 </body>
+
 
