@@ -173,7 +173,7 @@ $(document).ready(function(){
 
     let timeScale = d3.scaleLinear()
       .domain([year_min, year_max])
-      .range([width*0.1, width*0.9])
+      .range([width*0.105, width*0.895])
       .clamp(true);
 
     let timeAxis = d3.axisBottom(timeScale)
@@ -184,10 +184,15 @@ $(document).ready(function(){
 
     timeAxis(sliderContainer);
     sliderContainer
-      .attr("transform", "translate(0," + height*0.89 + ")");
+      .attr("transform", "translate(0," + height*0.895 + ")");
 
     svg.selectAll(".slider-container text")
-      .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)");
+      .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)")
+      .style("fill", "#cccccc");
+
+
+    svg.selectAll(".slider-container line")
+      .style("stroke", "#cccccc");
 
     // when the input range changes update the circle 
     slider.on("input", function() {
