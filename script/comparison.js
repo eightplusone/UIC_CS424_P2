@@ -12,14 +12,18 @@ $(document).ready(function(){
     let width = window.innerWidth,
         height = window.innerHeight;
     
-    // Responsive svg
+    /* 
+     * Responsive svg 
+     */
     let svg = d3.select("body").select("div.main").append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox","0 0 " + Math.min(width,height) + " " + Math.min(width,height))
       .attr("preserveAspectRatio","xMinYMin");
 
-    // Get the range of year & temperature
+    /* 
+     * Get the range of year & temperature
+     */
     let year = [];
     let avgtemp = [];
     let numCountry = [];
@@ -52,9 +56,6 @@ $(document).ready(function(){
     let avgtemp_min = d3.min(avgtemp);
     let avgtemp_max = d3.max(avgtemp);
 
-    // Currently selected year. By default, I set it at the lowest year.
-    let curr_year = year_min;
-
     // Scale to convert temperature to color
     let temp2color = d3.scaleLinear()
       .domain([avgtemp_min, avgtemp_max])
@@ -75,7 +76,15 @@ $(document).ready(function(){
     let co2_min = d3.min(co2);
     let co2_max = d3.max(co2);
 
-    // Sky
+    // Currently selected year. By default, I set it at the lowest year.
+    let curr_year = year_min;
+
+    // Currently selected indicator. By default, I set it to 1 (co2)
+    let indicator_selection = 1;
+
+    /* 
+     * Sky
+     */
     let sky = svg.append("rect")
       .attr("x", 0)
       .attr("y", 0)
@@ -83,9 +92,10 @@ $(document).ready(function(){
       .attr("height", height)
       .attr("fill", d3.rgb("#b4e6f9"))
       .attr("id", "sky");
-    //svg.style("background-color", d3.hsl(temp2color[avgtemp[curr_year]], 0.8, 0.7));
 
-    // sea
+    /* 
+     * Sea
+     */
     let sea = svg.append("rect")
       .attr("x", 0)
       .attr("y", height*0.7)
@@ -93,8 +103,10 @@ $(document).ready(function(){
       .attr("height", height*0.3)
       .attr("fill", "#19bae5");
 
-    // island
-    svg.append("rect")
+    /* 
+     * Island
+     */
+    let island = svg.append("rect")
       .attr("x", width*0.05)
       .attr("y", height*0.5)
       .attr("width", width*0.9)
@@ -102,8 +114,10 @@ $(document).ready(function(){
       .attr("fill", "#845346")
       .attr("id", "island");
 
-    // factories
-    for (i=0; i<9; i++) {
+    /* 
+     * Factories
+     */
+    for (i=0; i<10; i++) {
       // Each factory takes 4% of the width. Each gap between 2 factories
       // takes 2%. The entire series is 20% far from two sides of the screen.
       //
@@ -154,9 +168,104 @@ $(document).ready(function(){
         .style("fill", "#000000");
     }
 
-    // buttons
+    /* 
+     * Buttons
+     * References: http://www.nikhil-nathwani.com/blog/posts/radio/radio.html
+     */
+    //text that the radio button will toggle
+    var instruction_txt = svg.append("text")
+      .attr("id","numberToggle")
+      .attr("x", width*0.375)
+      .attr("y", height*0.72)
+      .attr("fill","#000000")
+      .attr("font-size", 20)
+      .text("Please select one of the below indicators");
 
-    // year title on top
+    //container for all buttons
+    var allButtons= svg.append("g")
+      .attr("id","allButtons");
+
+    //fontawesome button labels
+    var labels = ['\uf017','\uf200'];
+
+    //colors for different button states 
+    var defaultColor= "#777777";
+    var hoverColor= "#19bae5";
+    var pressedColor= "#009d9b";
+
+    //groups for each button (which will hold a rect and text)
+    var buttonGroups = allButtons.selectAll("g.button")
+      .data(labels)
+      .enter()
+      .append("g")
+      .attr("class","button")
+      .style("cursor","pointer")
+      .on("click",function(d,i) {
+          updateButtonColors(d3.select(this), d3.select(this.parentNode))
+          //d3.select("#numberToggle").text(i+1)
+          indicator_selection = i+1;
+          update(curr_year);
+      })
+      .on("mouseover", function() {
+          if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+              d3.select(this)
+                  .select("rect")
+                  .attr("fill",hoverColor);
+          }
+      })
+      .on("mouseout", function() {
+          if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+              d3.select(this)
+                  .select("rect")
+                  .attr("fill",defaultColor);
+          }
+      });
+
+    var bWidth= width*0.10; //button width
+    var bHeight= height*0.15; //button height
+    var bSpace= width*0.02; //space between buttons
+    var x0= width*0.39; //x offset
+    var y0= height*0.75; //y offset
+
+    //adding a rect to each toggle button group
+    //rx and ry give the rect rounded corner
+    buttonGroups.append("rect")
+      .attr("class","buttonRect")
+      .attr("width",bWidth)
+      .attr("height",bHeight)
+      .attr("x",function(d,i) {return x0+(bWidth+bSpace)*i;})
+      .attr("y",y0)
+      .attr("rx",5) //rx and ry give the buttons rounded corners
+      .attr("ry",5)
+      .attr("fill",defaultColor)
+
+    //adding text to each toggle button group, centered 
+    //within the toggle button rect
+    buttonGroups.append("text")
+      .attr("class","buttonText")
+      .attr("font-family","FontAwesome")
+      .attr("x",function(d,i) {
+          return x0 + (bWidth+bSpace)*i + bWidth/2;
+      })
+      .attr("y",y0+bHeight/2)
+      .attr("text-anchor","middle")
+      .attr("dominant-baseline","central")
+      .attr("fill","white")
+      .text(function(d) {return d;})
+
+    function updateButtonColors(button, parent) {
+        parent.selectAll("rect")
+                .attr("fill",defaultColor)
+
+        button.select("rect")
+                .attr("fill",pressedColor)
+    }
+
+
+
+    /* 
+     * Year title on top
+     */
     let year_display = svg.append("text")
       .text(curr_year)
       .attr("id", "year-display")
@@ -167,8 +276,10 @@ $(document).ready(function(){
       .attr("font-size", "20px")
       .attr("fill", "black");
 
-    // time slider
-    // Reference: http://bl.ocks.org/d3noob/10632804
+    /* 
+     * Time slider
+     * Reference: http://bl.ocks.org/d3noob/10632804
+     */
     let slider = d3.select("#nRadius");
 
     let timeScale = d3.scaleLinear()
@@ -184,7 +295,7 @@ $(document).ready(function(){
 
     timeAxis(sliderContainer);
     sliderContainer
-      .attr("transform", "translate(0," + height*0.895 + ")");
+      .attr("transform", "translate(0," + height*0.925 + ")");
 
     svg.selectAll(".slider-container text")
       .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)")
@@ -194,29 +305,103 @@ $(document).ready(function(){
     svg.selectAll(".slider-container line")
       .style("stroke", "#cccccc");
 
-    // when the input range changes update the circle 
+    // When the input range changes update the circle 
     slider.on("input", function() {
       update(+this.value);
     });
 
     // Initial starting year
+    let top_ten = [];
+    let country_names = svg.append("g")
+        .attr("x", 20)
+        .attr("y", 20);
     update(1965);
 
-    // update the elements
+    // Update elements
     function update(yr) {
-      // change sea level
+      curr_year = yr;
+      
+      // Clear old texts
+      top_ten = [];
+      country_names.text("");
+
+      // Change sea level
       sea.transition()
         .attr("y", height - height * temp2sea(avgtemp[yr]))
         .attr("height", height * temp2sea(avgtemp[yr]))
         .duration(1000);
 
-      // change sky color
+      // Change sky color
       sky.transition()
         .attr("fill", d3.hsl(temp2color(avgtemp[yr]), 0.8, 0.7))
         .duration(1000);
 
-      curr_year = yr;
+      // Change year title
       d3.select("#year-display").text(curr_year);
+
+      if (indicator_selection == 1) {  // carbon dioxide
+        let countries = [];
+
+        carbon.forEach(function(country, i) {
+          if (country.Year == yr)
+            countries.push(country);
+
+          countries.sort(function(a, b) {
+            return d3.descending(a.Carbon, b.Carbon);
+          });
+        });
+
+        for (j=0; j<10; j++) {
+          top_ten.push(countries[j]);
+        }
+      } else {  // energy
+        let countries = [];
+
+        energy.forEach(function(country, i) {
+          if (country.Year == yr)
+            countries.push(country);
+
+          countries.sort(function(a, b) {
+            return d3.descending(a.Energy, b.Energy);
+          });
+        });
+
+        for (j=0; j<10; j++) {
+          top_ten.push(countries[j]);
+        }
+      }
+
+      top_ten.forEach(function(country, i) {
+        /*
+        bubbles.append("circle")
+          .attr("cx", 30*i)
+          .attr("cy", 20)
+          .attr("r", 10)
+          .attr("fill", "#333333");
+        
+        if (indicator_selection == 1) {  // carbon dioxide
+          svg.append("text")
+            .text(country.Carbon)
+            .attr("x", 50*i)
+            .attr("y", 50)
+            .attr("fill", "#ffffff");
+        } else {  // energy
+          svg.append("text")
+            .text(country.Energy)
+            .attr("x", 50*i)
+            .attr("y", 50)
+            .attr("fill", "#ffffff");
+        }
+        */
+
+        country_names.append("text")
+          .text(country.Country)
+          .attr("font-size", 12)
+          .style("text-anchor","end") 
+          .attr("startOffset","100%")
+          .attr("fill", "#cccccc")
+          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.52 + ")rotate(-45)");
+      });
     }
   }
 });
