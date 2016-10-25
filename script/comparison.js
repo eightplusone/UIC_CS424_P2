@@ -312,18 +312,37 @@ $(document).ready(function(){
 
     // Initial starting year
     let top_ten = [];
-    let country_names = svg.append("g")
-        .attr("x", 20)
-        .attr("y", 20);
+    let country_names = svg.append("g");
+    let bubbles = svg.append("g");
     update(1965);
 
     // Update elements
     function update(yr) {
       curr_year = yr;
-      
+
       // Clear old texts
       top_ten = [];
+      country_names
+        .style("fill-opacity", 1)
+        .transition()
+        .duration(1000)
+        .style("fill-opacity", 0);
       country_names.text("");
+
+      bubbles.selectAll("text").remove();
+
+      // Need to deep copy all circles from bubbles to old_bubbles in order
+      // to save the old circles
+      // Deep copy references:
+      let old_bubbles = svg.append("g");
+      bubbles.each(function(){
+
+      });
+      bubbles.selectAll("circle").remove();
+      old_bubbles.selectAll("circle")
+        .transition()
+        .attr("transform", "translate(" + (width*Math.random()) + ", 0)")
+        .duration(3000);
 
       // Change sea level
       sea.transition()
@@ -372,27 +391,30 @@ $(document).ready(function(){
       }
 
       top_ten.forEach(function(country, i) {
-        /*
         bubbles.append("circle")
-          .attr("cx", 30*i)
+          .attr("cx", 0)
           .attr("cy", 20)
-          .attr("r", 10)
-          .attr("fill", "#333333");
+          .attr("r", 30)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.5)
+          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.30 + ")");
         
+        let value = "";
+        // Convert to values to 2 decimal digits
         if (indicator_selection == 1) {  // carbon dioxide
-          svg.append("text")
-            .text(country.Carbon)
-            .attr("x", 50*i)
-            .attr("y", 50)
-            .attr("fill", "#ffffff");
+          let val = (Math.round(country.Carbon * 10) / 10).toFixed(2);
+          if (val < 10) value = "0";
+          value += val;
         } else {  // energy
-          svg.append("text")
-            .text(country.Energy)
-            .attr("x", 50*i)
-            .attr("y", 50)
-            .attr("fill", "#ffffff");
+          let val = (Math.round(country.Energy * 1000) / 1000000).toFixed(2);
+          if (val < 10) value = "0";
+          value += val;
         }
-        */
+        bubbles.append("text")
+          .text(value)
+          .attr("x", width*0.235 + width*0.06*i)
+          .attr("y", height*0.33)
+          .attr("fill", "#ffffff");
 
         country_names.append("text")
           .text(country.Country)
@@ -401,6 +423,17 @@ $(document).ready(function(){
           .attr("startOffset","100%")
           .attr("fill", "#cccccc")
           .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.52 + ")rotate(-45)");
+
+        country_names
+          .style("fill-opacity", 0)
+          .transition()
+          .duration(1000)
+          .style("fill-opacity", 1);
+        /*
+        country_names.transition()
+          .attr("x", 20)
+          .duration(1000);
+        */
       });
     }
   }
