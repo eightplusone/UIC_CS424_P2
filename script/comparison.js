@@ -186,7 +186,7 @@ $(document).ready(function(){
       .attr("id","allButtons");
 
     //fontawesome button labels
-    var labels = ['\uf017','\uf200'];
+    var labels = ["Carbon", "Energy"];
 
     //colors for different button states 
     var defaultColor= "#777777";
@@ -202,7 +202,6 @@ $(document).ready(function(){
       .style("cursor","pointer")
       .on("click",function(d,i) {
           updateButtonColors(d3.select(this), d3.select(this.parentNode))
-          //d3.select("#numberToggle").text(i+1)
           indicator_selection = i+1;
           update(curr_year);
       })
@@ -270,11 +269,11 @@ $(document).ready(function(){
       .text(curr_year)
       .attr("id", "year-display")
       .attr("x", width*0.48)
-      .attr("y", height*0.05)
+      .attr("y", height*0.15)
       .attr("text-anchor", "middle")
       .attr("alignment-baseline","central")
       .attr("font-size", "20px")
-      .attr("fill", "black");
+      .attr("fill", "#000000");
 
     /* 
      * Time slider
@@ -314,6 +313,14 @@ $(document).ready(function(){
     let top_ten = [];
     let country_names = svg.append("g");
     let bubbles = svg.append("g");
+    let indicator_unit = svg.append("text")
+      .text(curr_year)
+      .attr("x", width*0.95)
+      .attr("y", height*0.49)
+      .style("text-anchor","end") 
+      .attr("startOffset","100%")
+      .attr("font-size", "12px")
+      .attr("fill", "#000000");
     update(1965);
 
     // Update elements
@@ -331,18 +338,26 @@ $(document).ready(function(){
 
       bubbles.selectAll("text").remove();
 
-      // Need to deep copy all circles from bubbles to old_bubbles in order
-      // to save the old circles
-      // Deep copy references:
-      let old_bubbles = svg.append("g");
+      // Need to deep copy all circles from bubbles to another container in 
+      // order to save the old circles
+      // Deep copy references: http://stackoverflow.com/a/27443487
       bubbles.each(function(){
-
+        let clone = svg.node().appendChild(this.cloneNode(true));
+        d3.select(clone)
+          .attr("class", "clone")
+          .attr("id", "clone-" + i);
+        d3.select(clone)
+          .style("fill-opacity", 1.0)
+          .transition()
+          .duration(1000)
+          .style("fill-opacity", 0.2);
+        d3.select(clone)
+          .transition()
+          .attr("transform", "translate(" + (-width*(Math.random(1)-0.5)) + "," + (-height*0.35) + ")")
+          .duration(3000);
       });
+
       bubbles.selectAll("circle").remove();
-      old_bubbles.selectAll("circle")
-        .transition()
-        .attr("transform", "translate(" + (width*Math.random()) + ", 0)")
-        .duration(3000);
 
       // Change sea level
       sea.transition()
@@ -391,31 +406,50 @@ $(document).ready(function(){
       }
 
       top_ten.forEach(function(country, i) {
+        // Smoke
         bubbles.append("circle")
           .attr("cx", 0)
           .attr("cy", 20)
           .attr("r", 30)
           .attr("fill", "#333333")
-          .attr("fill-opacity", 0.5)
-          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.30 + ")");
+          .attr("fill-opacity", 0.6)
+          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.35 + ")");
+        bubbles.append("circle")
+          .attr("cx", 0)
+          .attr("cy", 20)
+          .attr("r", 18)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.4)
+          .attr("transform", "translate(" + (width*0.24 + width*0.06*i) + "," + height*0.39 + ")");
+        bubbles.append("circle")
+          .attr("cx", 0)
+          .attr("cy", 20)
+          .attr("r", 10)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.2)
+          .attr("transform", "translate(" + (width*0.24 + width*0.06*i) + "," + height*0.41 + ")");
         
+        // Value & unit
         let value = "";
         // Convert to values to 2 decimal digits
         if (indicator_selection == 1) {  // carbon dioxide
           let val = (Math.round(country.Carbon * 10) / 10).toFixed(2);
           if (val < 10) value = "0";
           value += val;
+          indicator_unit.text("(metric tons per capita)");
         } else {  // energy
-          let val = (Math.round(country.Energy * 1000) / 1000000).toFixed(2);
+          let val = (Math.round(country.Energy * 1) / 100).toFixed(2);
           if (val < 10) value = "0";
           value += val;
+          indicator_unit.text("(x100kg of oil per capita)");
         }
         bubbles.append("text")
           .text(value)
-          .attr("x", width*0.235 + width*0.06*i)
-          .attr("y", height*0.33)
+          .attr("x", width*0.2375 + width*0.06*i)
+          .attr("y", height*0.38)
           .attr("fill", "#ffffff");
 
+        // Country names
         country_names.append("text")
           .text(country.Country)
           .attr("font-size", 12)
@@ -423,17 +457,11 @@ $(document).ready(function(){
           .attr("startOffset","100%")
           .attr("fill", "#cccccc")
           .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.52 + ")rotate(-45)");
-
         country_names
           .style("fill-opacity", 0)
           .transition()
           .duration(1000)
           .style("fill-opacity", 1);
-        /*
-        country_names.transition()
-          .attr("x", 20)
-          .duration(1000);
-        */
       });
     }
   }
