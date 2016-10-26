@@ -71,13 +71,6 @@ input[type='range']::-webkit-slider-thumb {
   width: 15px;
 }
 
-.legendday {
-            font-size: 12px;
-        }
-    
-    .legend {
-            font-size: 12px;
-        } 
   div.tooltip {
             position: absolute;
             text-align: center;

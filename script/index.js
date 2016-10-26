@@ -87,7 +87,64 @@ $(document).ready(function(){
 				.attr("height","80%")
 				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	        
+	    var group = canvas.append("g")
+				   .attr("width", 300)
+                   .attr("height", 300)
+                   .attr("class", "legendLinear")
+                   .attr("transform", "translate("+width*0.1+","+height*0.2+")");			
+				
+	var colorScale1 = d3.scaleQuantize()
+                             .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
+								 
+                        var defs = group.append("defs");
+                        var linearGradient = defs.append("linearGradient")
+                                .attr("id", "linear-gradient");
+                        linearGradient
+                                .attr("x1", "0%")
+                                .attr("y1", "0%")
+                                .attr("x2", "100%")
+                                .attr("y2", "0%");
+
+                        group.append("rect")
+                                .attr("x","-33%")
+                                .attr("y","-50%")
+                                .attr("width", 300)
+                                .attr("height", 35)
+                                .style("fill", "url(#linear-gradient)")
+                                .attr("transform", "rotate(-90)");
+
+                        linearGradient.selectAll("stop")
+                                .data( colorScale1.range() )
+                                .enter().append("stop")
+                                .attr("offset", function(d,i) { return i/(colorScale1.range().length-1); })
+                                .attr("stop-color", function(d) { return d; });
+
+                        //adding text to legends
+                        group.append('text')
+                                .attr('x', "-49%")
+                                .attr('y', "31.5%")
+                                .text(mintemp.toFixed(2))
+                                .style("font-size","13px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia");
+
+                        group.append('text')
+                                .attr('x', "-49%")
+                                .attr('y', "-32.5%")
+                                .text(maxtemp.toFixed(2))
+                                .style("font-size","13px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia");
+
+                        group.append('text')
+                                .attr('x', "-50%")
+                                .attr('y', "38%")
+                                .text("°C")
+                                .style("font-size","14px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia")
+                                .style('fill', 'white');
+				    
 				
 		d3.json("./data/world_countries.json", function(error,json) {
 			if(error)
@@ -189,16 +246,12 @@ $(document).ready(function(){
 					mineobj.push(datao[i]);
 				}
 			}
-			//console.log(mineobj);
-			//console.log(mineTemp);
 			
             //to control the length of the bars
             var mintemp = d3.min(mineTemp);
-			console.log("min"+mintemp);
-           
+			        
             var maxtemp = d3.max(mineTemp);
-			console.log("max"+maxtemp);
-            
+			           
             var colorScale = d3.scaleQuantize()
                     .domain([mintemp,maxtemp])
                     .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
@@ -216,7 +269,64 @@ $(document).ready(function(){
 				.attr("height","80%")
 				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	 
+	 var group = canvas.append("g")
+				   .attr("width", 300)
+                   .attr("height", 300)
+                   .attr("class", "legendLinear")
+                   .attr("transform", "translate("+width*0.1+","+height*0.2+")");			
+				
+	var colorScale1 = d3.scaleQuantize()
+                             .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
+								 
+                        var defs = group.append("defs");
+                        var linearGradient = defs.append("linearGradient")
+                                .attr("id", "linear-gradient");
+                        linearGradient
+                                .attr("x1", "0%")
+                                .attr("y1", "0%")
+                                .attr("x2", "100%")
+                                .attr("y2", "0%");
+
+                        group.append("rect")
+                                .attr("x","-33%")
+                                .attr("y","-50%")
+                                .attr("width", 300)
+                                .attr("height", 35)
+                                .style("fill", "url(#linear-gradient)")
+                                .attr("transform", "rotate(-90)");
+
+                        linearGradient.selectAll("stop")
+                                .data( colorScale1.range() )
+                                .enter().append("stop")
+                                .attr("offset", function(d,i) { return i/(colorScale1.range().length-1); })
+                                .attr("stop-color", function(d) { return d; });
+
+                        //adding text to legends
+                        group.append('text')
+                                .attr('x', "-49%")
+                                .attr('y', "31.5%")
+                                .text(mintemp.toFixed(2))
+                                .style("font-size","13px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia");
+
+                        group.append('text')
+                                .attr('x', "-49%")
+                                .attr('y', "-32.5%")
+                                .text(maxtemp.toFixed(2))
+                                .style("font-size","13px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia");
+
+                        group.append('text')
+                                .attr('x', "-50%")
+                                .attr('y', "38%")
+                                .text("°C")
+                                .style("font-size","14px")
+                                .style("font-weight","bold")
+                                .style("font-family", "Georgia")
+                                .style('fill', 'white');
+				
 				
 		d3.json("./data/world_countries.json", function(error,json) {
 			if(error)
@@ -476,7 +586,8 @@ $(document).ready(function(){
 		.enter().append("text")
 		.attr("x", x)
 		.attr("text-anchor", "middle")
-		.text(function(d) { return d; });
+		.text(function(d) { return d; })
+		.attr("fill","white");
 
 	var handle = slider.insert("circle", ".track-overlay")
 		.attr("class", "handle")
