@@ -1,25 +1,72 @@
-<header>
-  <title>Project 2 - Group 4</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta name="description" content="Project 2 - Group 4">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  
+  <script src="http://code.jquery.com/jquery.js"></script>
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="script/country.js"></script>  
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="script/country.js"></script>
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">        
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/country.css">
-</header>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+  <link rel="stylesheet" type="text/css" href="css/style2.css">
+  </head>
 <body>
-  <!-- Menu -->
-  <div class="menu col-xs-12">
-      <div class="col-xs-4"><center><a href="index.html"><h4>World Average</h4></a></center></div>
-      <div class="col-xs-4"><center><a href="country.html"><h4>Individual Country</h4></a></center></div>
-      <div class="col-xs-4"><center><a href="comparison.html"><h4>Comparison</h4></a></center></div>
-  </div>
-
-  <!-- Main content -->
-  <div class="main"></div>
+<!--The main container starts-->
+<div class="container-fluid">
+    <div class="row" style="background-color:black">
+        <!--The row with the search box and the Glyphicon-->
+        <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="input-group">
+					<input type="text" placeholder="Name of the country" class="form-control" id="tags"
+						style="background:transparent;border-right: none;">
+							<span id="button1" class="input-group-addon" style="background: transparent">
+								<i class="glyphicon glyphicon-search"></i>
+							</span>
+				</div>
+            </div>
+        </div>
+        </div>
+    <!--The rows with the headings-->
+    <div class="row"> <p align="center" style="color: white;">
+        Move your mouse over an arc to see the information of the country in the selected year</p>
+    </div>
+    <div class="row"> <p align="center" style="color: white;">
+        (Missing years are painted in black)</p>
+    </div>
+    <div id="headings" class="row">
+        <div class="col-md-4 col-lg-4 col-xl-4 col-xs-4">
+            <p align="center" style="margin-left: 25%">Temperature</p>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-4 col-xs-4">
+            <p align="center" style="margin-left: 25%">Energy Consumption</p>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-4 col-xs-4">
+            <p align="center" style="margin-left: 25%">Carbon Emission</p>
+        </div>
+    </div>
+    <!--The tag which is going to disappear on button click-->
+    <div id="tohide" class="row" style="margin-top: 20%">
+        <div class="col-md-12 col-lg-12 col-xl-12 col-xs-12">
+            <p align="center">No country has been selected</p>
+        </div>
+    </div>
+    <!--The row with 3 donuts starts here-->
+    <div class="row">
+        <!--The column with the "temperature" donut-->
+        <div class="col-md-4 col-lg-4 col-xl-4 col-xs-4" id="area1" style="background-color:black;"></div>
+		
+        <div class="col-md-4 col-lg-4 col-xl-4 col-xs-4" id ="area2" style="background-color:black;"></div>
+		<div class="col-md-4 col-lg-4 col-xl-4 col-xs-4" id ="area3" style="background-color:black;"></div>
+		
+    </div>
+    </div>
+            
 </body>
-
+</html>

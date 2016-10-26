@@ -25,13 +25,6 @@ $(document).ready(function(){
     {
         return d.temperature;
     }  
-	/*function getnewYear(){
-		return year;
-	}
-	function setnewYear(x)
-	{
-		year= x;
-	}*/
 	
 	function render(year,item){
 	    if(item=="Temperature(degree Celcius)")
@@ -94,48 +87,7 @@ $(document).ready(function(){
 				.attr("height","80%")
 				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	 /* var group = g.append("g")
-                    .attr("transform","translate("+width*0.2+","+height*0.6+")")
-                    .attr("width", width*0.3)
-                    .attr("height", height*0.3)
-                    .attr("class", "legendLinear");
-
-            //for legend//////////////////////////////////////////check the legend workings 
-			
-            var legend = group.selectAll("legend")
-                    .data(colorScale.ticks(9).slice(1).reverse())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate("+width*0.2+"," + i * 30 + ")"; })
-
-            legend.append("rect")
-					.attr("x", 10)
-					.attr("y",10)
-                    .attr("width", width*0.04)
-                    .attr("height", height*0.06)
-                    .style("fill", colorScale);
-
-            g.append("text")
-                    .attr("x",width*0.06)
-                    .attr("y", height*0.06)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("Temperature");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 620)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("19 C");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 355)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("22 C");*/
-            
+	        
 				
 		d3.json("./data/world_countries.json", function(error,json) {
 			if(error)
@@ -187,7 +139,9 @@ $(document).ready(function(){
                         }
                     })
 					
-					.on("mouseover",funcmouseover)
+					.on("mouseover",function(d){
+										d3.select(this.parentNode.appendChild(this)).transition().duration(300);
+										funcmouseover(d)})
                     .on("mouseout", funcmouseout);
 					
 			 function funcmouseover(d)
@@ -262,48 +216,7 @@ $(document).ready(function(){
 				.attr("height","80%")
 				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	 /* var group = g.append("g")
-                    .attr("transform","translate("+width*0.2+","+height*0.6+")")
-                    .attr("width", width*0.3)
-                    .attr("height", height*0.3)
-                    .attr("class", "legendLinear");
-
-            //for legend//////////////////////////////////////////check the legend workings 
-			
-            var legend = group.selectAll("legend")
-                    .data(colorScale.ticks(9).slice(1).reverse())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate("+width*0.2+"," + i * 30 + ")"; })
-
-            legend.append("rect")
-					.attr("x", 10)
-					.attr("y",10)
-                    .attr("width", width*0.04)
-                    .attr("height", height*0.06)
-                    .style("fill", colorScale);
-
-            g.append("text")
-                    .attr("x",width*0.06)
-                    .attr("y", height*0.06)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("Temperature");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 620)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("19 C");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 355)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("22 C");*/
-            
+	 
 				
 		d3.json("./data/world_countries.json", function(error,json) {
 			if(error)
@@ -359,7 +272,9 @@ $(document).ready(function(){
                         }
                     })
 					
-					.on("mouseover",funcmouseover)
+					.on("mouseover",function(d){
+							d3.select(this.parentNode.appendChild(this)).transition().duration(300);
+							funcmouseover(d)})
                     .on("mouseout", funcmouseout);
 					
 			 function funcmouseover(d)
@@ -430,47 +345,7 @@ $(document).ready(function(){
 				.attr("height","80%")
 				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	 /* var group = g.append("g")
-                    .attr("transform","translate("+width*0.2+","+height*0.6+")")
-                    .attr("width", width*0.3)
-                    .attr("height", height*0.3)
-                    .attr("class", "legendLinear");
-
-            //for legend//////////////////////////////////////////check the legend workings 
-			
-            var legend = group.selectAll("legend")
-                    .data(colorScale.ticks(9).slice(1).reverse())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate("+width*0.2+"," + i * 30 + ")"; })
-
-            legend.append("rect")
-					.attr("x", 10)
-					.attr("y",10)
-                    .attr("width", width*0.04)
-                    .attr("height", height*0.06)
-                    .style("fill", colorScale);
-
-            g.append("text")
-                    .attr("x",width*0.06)
-                    .attr("y", height*0.06)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("Temperature");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 620)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("19 C");
-					
-            g.append("text")
-                    .attr("x", width - 1305)
-                    .attr("y", 355)
-                    .attr("dy", ".35em")
-                    .style("font-family", "Georgia")
-                    .text("22 C");*/
+	
             
 				
 		d3.json("./data/world_countries.json", function(error,json) {
@@ -537,7 +412,9 @@ $(document).ready(function(){
 										})
                             .attr("fill", "#e33434")
 							.attr("fill-opacity",0.5)
-							.on("mouseover",funcmouseover)
+							.on("mouseover",function(d){
+										d3.select(this.parentNode.appendChild(this)).transition().duration(300);
+										funcmouseover(d)})
 							.on("mouseout", funcmouseout);
 					
 			 function funcmouseover(d)
@@ -575,7 +452,7 @@ $(document).ready(function(){
 		
 	var slider = svg.append("g")			//appended to svg
 				.attr("class", "slider")
-				.attr("transform", "translate(" + width*0.25 + "," + height*0.95 + ")");
+				.attr("transform", "translate(" + width*0.35 + "," + height*0.95 + ")");
 
 	slider.append("line")
 			.attr("class", "track")
@@ -613,22 +490,12 @@ $(document).ready(function(){
  
   function rerender(x){
 		let selectedValue = $("#selectIndicator").find("option:selected").text();
-		// Clear the canvas
-		//d3.select("svg").selectAll("#remodel").remove();
-		//console.log(year);
-		// Update with new graph
 		render(x,selectedValue);
 	}
 	
 	$("#selectIndicator").change(function() {
 		let selectedValue = $(this).find("option:selected").text();
-		// Clear the canvas
-		//d3.select("svg").selectAll("remodel").remove();
-		
 		d3.select("svg").selectAll("#remodel").remove();
-		//d3.selectAll("svg > *").remove();
-		//console.log("sdfghjk"+year);
-		// Update with new graph
 		render(year,selectedValue);
 	});
 

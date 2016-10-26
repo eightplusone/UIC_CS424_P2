@@ -1,6 +1,7 @@
 html, body {
-  height: 100%;
-  width: 100%;
+
+  font-family: "Century Gothic";
+  background-color: black;
 }
 
 .menu {
@@ -9,18 +10,13 @@ html, body {
 }
 
 .main {
-  position: relative;
-  padding-left: 0;
-  padding-right: 0;
-  margin: auto;
-  left:0;
-  right: 0;
-  top: 0;
-  bottom: 0;  
-}
-
+  height: 95%;
+ 
+ }
+ 
 .ticks {
   font: 10px sans-serif;
+  color: #fff;
 }
 
 .track,
@@ -82,35 +78,42 @@ input[type='range']::-webkit-slider-thumb {
     .legend {
             font-size: 12px;
         } 
-   div.tooltip {
+  div.tooltip {
             position: absolute;
             text-align: center;
             padding: 2px;
             font-size: 12pt;
-      font-family: "Georgia","Times New Roman";
-            background: lightsteelblue;
-
+            font-family: "Century Gothic";
+            color: white;
         }
-<<<<<<< HEAD
-	
-	.path {
-		
+
+  .path{
 		stroke:#000;
-		stroke-width:1.5px;
+		stroke-width:0.2px;
 	}
 		
-		
-		
-=======
-  
-  .path {
-    fill:none;
-  }
-    
-    
-    
->>>>>>> origin/master
-.path:hover {
-  stroke: #fff;
-  stroke-width: 2px;
- }
+	.path:hover {
+	stroke: #fff;
+	stroke-width: 2px;
+	}
+	
+	
+	.carbon{
+		stroke:#000;
+		stroke-width:0.2px;
+	}				
+	.carbon:hover {
+	stroke: #fff;
+	stroke-width: 2px;
+	}	
+
+ #tohide{
+            color:antiquewhite;
+            font-family: "Century Gothic";
+            font-size: 15px;
+        }
+#headings{
+            color: greenyellow;
+            font-family:"Century Gothic";
+            font-size: 20px;
+        }		
