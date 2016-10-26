@@ -2,7 +2,7 @@ $(document).ready(function(){
 					/*Getting the contry names and removing the duplicate names*/
 					var countries_duplicates = new Array();
 					var uniqueVals= new Array();
-					d3.json("tempebycountry.json", function(datao) {
+					d3.json("./data/tempbycountry.json", function(datao) {
 						for (var i=0;i<datao.length;i++) {
 							countries_duplicates.push(datao[i].Country);
 						}
@@ -32,7 +32,7 @@ $(document).ready(function(){
                     var country_array = new Array();
                     var countryMatch = param;
 
-                    d3.json("tempebycountry.json", function(datao) {
+                    d3.json("./data/tempbycountry.json", function(datao) {
                         for (var i=0;i<datao.length;i++){
 							var country= datao[i].Country;
                             var index=i;
@@ -274,7 +274,7 @@ $(document).ready(function(){
             function energy_function(param) {
                     var country_array = new Array(); //array initialization
                     var countryMatch = param;
-                    d3.json("energypercountryperyear.json", function (datao) {
+                    d3.json("./data/energypercountryperyear.json", function (datao) {
                         for (var i = 0; i < datao.length; i++) {
                             var country = datao[i].Country;
                             var index = i;
@@ -430,7 +430,7 @@ $(document).ready(function(){
                     var country_array = new Array(); //array initialization
                     var countryMatch = param;
 
-                    d3.json("carbon.json", function (error, datao) {
+                    d3.json("./data/carboncumlativeByYearByCountry.json", function (error, datao) {
 
                         for (var i = 0; i < datao.length; i++) {
                             var country = datao[i].Country;

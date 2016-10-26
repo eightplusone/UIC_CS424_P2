@@ -419,7 +419,7 @@ $(document).ready(function(){
 	
 	 var mineobj = new Array();
      var mineTemp = new Array();		
-	 d3.json("./data/carboncumulativeByYearByCountry.json", function(error,datao) {
+	 d3.json("./data/carboncumlativeByYearByCountry.json", function(error,datao) {
         if (error) {  //If error is not null, something went wrong.
             console.log(error);  //Log the error.
         } else {
@@ -498,7 +498,21 @@ $(document).ready(function(){
 					.attr("fill","#aad4dd");
 					
             canvas.selectAll("path").each(function(d,i) {  var centroid = path.centroid(d);
+                             if(d.properties.name== "USA"){
+							 var x= centroid[0]+20;
+							 var y = centroid[1]+40;
+							 centroid =[x,y];
                              json.features[i].properties.centroid = centroid;
+                            }
+							else if(d.properties.name== "Norway"){
+							 var x= centroid[0]+0;
+							 var y = centroid[1]+50;
+							 centroid =[x,y];
+                             json.features[i].properties.centroid = centroid;
+                            }
+							else{
+								json.features[i].properties.centroid = centroid;
+							}
                             });			
 					
 			canvas.append("g")
@@ -507,6 +521,7 @@ $(document).ready(function(){
 						 .sort(function(a, b) { return b.properties.value - a.properties.value; }))
 					  .enter()
 						.append("circle")
+						.attr("class","carbon")
 						.attr("cx", function (d) {
 								return d.properties.centroid[0];
 								})
