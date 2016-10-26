@@ -1796,7 +1796,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Bosnia and Herzegovina"
+			"name": "Bosnia And Herzegovina"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -3740,7 +3740,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Ivory Coast"
+			"name": "CÃ´te D'Ivoire"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -3873,7 +3873,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Democratic Republic of the Congo"
+			"name": "Congo (Democratic Republic Of The)"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -4008,7 +4008,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Republic of the Congo"
+			"name": "Congo"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -5216,7 +5216,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "England"
+			"name": "United Kingdom"
 		},
 		"geometry": {
 			"type": "MultiPolygon",
@@ -8134,7 +8134,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Myanmar"
+			"name": "Burma"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -8426,7 +8426,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Mauritania"
+			"name": "Mauritius"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -11280,7 +11280,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Republic of Serbia"
+			"name": "Serbia"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -12070,7 +12070,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "United Republic of Tanzania"
+			"name": "Tanzania"
 		},
 		"geometry": {
 			"type": "Polygon",
