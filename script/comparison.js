@@ -2,59 +2,122 @@ $(document).ready(function(){
 
   d3.queue()
     .defer(d3.json, "./data/tempbycountry.json")
-    //.defer(d3.json, "./data/carbongasByYearByCountry.json")
-    //.defer(d3.json, "./data/energyfossilpercountryperyear.json")
-    //.defer(d3.json, "./data/carbonSolidByYearByCountry.json")
-    //.defer(d3.json, "./data/data.json")
+    .defer(d3.json, "./data/carboncumlativeByYearByCountry.json")
+    .defer(d3.json, "./data/energypercountryperyear.json")
     .await(comparison);
 
-  //function comparison(error, temp, gas, fossil, coal) {
-  function comparison(error, temperature) {
+  function comparison(error, temperature, carbon, energy) {
     if(error) throw error;
 
     let width = window.innerWidth,
         height = window.innerHeight;
-    console.log(width);
-
-    // Responsive svg
+    
+    /* 
+     * Responsive svg 
+     */
     let svg = d3.select("body").select("div.main").append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox","0 0 " + Math.min(width,height) + " " + Math.min(width,height))
-      .attr("preserveAspectRatio","xMinYMin")
+      .attr("preserveAspectRatio","xMinYMin");
 
-    // Get the range of temperature (on entire dataset)
+    /* 
+     * Get the range of year & temperature
+     */
     let year = [];
+    let avgtemp = [];
+    let numCountry = [];
+
     temperature.forEach(function(t, i) {
-      year.push(t.Year);
+      let yr = t.Year;
+      if (year.indexOf(yr) == -1)
+        year.push(yr);
+
+      // Check for existences
+      if (typeof avgtemp[yr] === "undefined")
+        avgtemp[yr] = 0;
+      if (typeof numCountry[yr] === "undefined")
+        numCountry[yr] = 0;
+
+      // Only count non-zero temperatures
+      if (t.Temperature != 0) {
+        avgtemp[yr] += t.Temperature;
+        numCountry[yr]++;
+      }
     });
-    let slider_min = d3.min(year);
-    let slider_max = d3.max(year);
 
-    // Sky
-    let sky_color = d3.rgb("#b4e6f9");
-    //sky_color = sky_color.darker();
-    svg.style("background-color", sky_color);
+    // Calculate the average
+    avgtemp.forEach(function(t,i) {
+      avgtemp[i] = avgtemp[i] / numCountry[i];
+    });   
 
-    // sea
-    let sea_lvl = height*0.3;
-    svg.append("rect")
+    let year_min = d3.min(year);
+    let year_max = d3.max(year);
+    let avgtemp_min = d3.min(avgtemp);
+    let avgtemp_max = d3.max(avgtemp);
+
+    // Scale to convert temperature to color
+    let temp2color = d3.scaleLinear()
+      .domain([avgtemp_min, avgtemp_max])
+      .range([70, 0])
+      .clamp(true);
+
+    // Scale to convert temperature to sea level
+    let temp2sea = d3.scaleLinear()
+      .domain([avgtemp_min, avgtemp_max])
+      .range([0.1, 0.4])
+      .clamp(true);
+
+    // Get the range of carbon dioxide emission
+    let co2 = [];
+    carbon.forEach(function(c, i) {
+      co2.push(c.Carbon);
+    });
+    let co2_min = d3.min(co2);
+    let co2_max = d3.max(co2);
+
+    // Currently selected year. By default, I set it at the lowest year.
+    let curr_year = year_min;
+
+    // Currently selected indicator. By default, I set it to 1 (co2)
+    let indicator_selection = 1;
+
+    /* 
+     * Sky
+     */
+    let sky = svg.append("rect")
       .attr("x", 0)
-      .attr("y", height - sea_lvl)
-      .attr("width", width*1.2)
-      .attr("height", sea_lvl)
+      .attr("y", 0)
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", d3.rgb("#b4e6f9"))
+      .attr("id", "sky");
+
+    /* 
+     * Sea
+     */
+    let sea = svg.append("rect")
+      .attr("x", 0)
+      .attr("y", height*0.7)
+      .attr("width", width)
+      .attr("height", height*0.3)
       .attr("fill", "#19bae5");
 
-    // island
-    svg.append("rect")
-      .attr("x", width*0.1)
+    /* 
+     * Island
+     */
+    let island = svg.append("rect")
+      .attr("x", width*0.05)
       .attr("y", height*0.5)
-      .attr("width", width*0.8)
+      .attr("width", width*0.9)
       .attr("height", height*0.5)
-      .attr("fill", "#845346");
+      .attr("fill", "#845346")
+      .attr("id", "island");
 
-    // factories
-    for (i=0; i<9; i++) {
+    /* 
+     * Factories
+     */
+    for (i=0; i<10; i++) {
       // Each factory takes 4% of the width. Each gap between 2 factories
       // takes 2%. The entire series is 20% far from two sides of the screen.
       //
@@ -105,65 +168,301 @@ $(document).ready(function(){
         .style("fill", "#000000");
     }
 
-    // buttons
+    /* 
+     * Buttons
+     * References: http://www.nikhil-nathwani.com/blog/posts/radio/radio.html
+     */
+    //text that the radio button will toggle
+    var instruction_txt = svg.append("text")
+      .attr("id","numberToggle")
+      .attr("x", width*0.375)
+      .attr("y", height*0.72)
+      .attr("fill","#000000")
+      .attr("font-size", 20)
+      .text("Please select one of the below indicators");
 
-    // year
-    let year_title = svg.append("year_title")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("width", "20%")
-      .attr("height", "10%")
-      .attr("fill", "#ffffff");
+    //container for all buttons
+    var allButtons= svg.append("g")
+      .attr("id","allButtons");
 
-    // time slider
-    // Reference: https://bl.ocks.org/mbostock/6452972
-    let x = d3.scaleLinear()
-      .domain([slider_min, slider_max])
-      .range([width*0.20, width*0.80])
+    //fontawesome button labels
+    var labels = ["Carbon", "Energy"];
+
+    //colors for different button states 
+    var defaultColor= "#777777";
+    var hoverColor= "#19bae5";
+    var pressedColor= "#009d9b";
+
+    //groups for each button (which will hold a rect and text)
+    var buttonGroups = allButtons.selectAll("g.button")
+      .data(labels)
+      .enter()
+      .append("g")
+      .attr("class","button")
+      .style("cursor","pointer")
+      .on("click",function(d,i) {
+          updateButtonColors(d3.select(this), d3.select(this.parentNode))
+          indicator_selection = i+1;
+          update(curr_year);
+      })
+      .on("mouseover", function() {
+          if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+              d3.select(this)
+                  .select("rect")
+                  .attr("fill",hoverColor);
+          }
+      })
+      .on("mouseout", function() {
+          if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+              d3.select(this)
+                  .select("rect")
+                  .attr("fill",defaultColor);
+          }
+      });
+
+    var bWidth= width*0.10; //button width
+    var bHeight= height*0.15; //button height
+    var bSpace= width*0.02; //space between buttons
+    var x0= width*0.39; //x offset
+    var y0= height*0.75; //y offset
+
+    //adding a rect to each toggle button group
+    //rx and ry give the rect rounded corner
+    buttonGroups.append("rect")
+      .attr("class","buttonRect")
+      .attr("width",bWidth)
+      .attr("height",bHeight)
+      .attr("x",function(d,i) {return x0+(bWidth+bSpace)*i;})
+      .attr("y",y0)
+      .attr("rx",5) //rx and ry give the buttons rounded corners
+      .attr("ry",5)
+      .attr("fill",defaultColor)
+
+    //adding text to each toggle button group, centered 
+    //within the toggle button rect
+    buttonGroups.append("text")
+      .attr("class","buttonText")
+      .attr("font-family","FontAwesome")
+      .attr("x",function(d,i) {
+          return x0 + (bWidth+bSpace)*i + bWidth/2;
+      })
+      .attr("y",y0+bHeight/2)
+      .attr("text-anchor","middle")
+      .attr("dominant-baseline","central")
+      .attr("fill","white")
+      .text(function(d) {return d;})
+
+    function updateButtonColors(button, parent) {
+        parent.selectAll("rect")
+                .attr("fill",defaultColor)
+
+        button.select("rect")
+                .attr("fill",pressedColor)
+    }
+
+
+
+    /* 
+     * Year title on top
+     */
+    let year_display = svg.append("text")
+      .text(curr_year)
+      .attr("id", "year-display")
+      .attr("x", width*0.48)
+      .attr("y", height*0.15)
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline","central")
+      .attr("font-size", "20px")
+      .attr("fill", "#000000");
+
+    /* 
+     * Time slider
+     * Reference: http://bl.ocks.org/d3noob/10632804
+     */
+    let slider = d3.select("#nRadius");
+
+    let timeScale = d3.scaleLinear()
+      .domain([year_min, year_max])
+      .range([width*0.105, width*0.895])
       .clamp(true);
 
-    let slider = svg.append("g")
-      .attr("class", "slider")
-      .attr("transform", "translate(0," + height*0.9 + ")");
+    let timeAxis = d3.axisBottom(timeScale)
+      .ticks(49);
 
-    slider.append("line")
-      .attr("class", "track")
-      .attr("x1", x.range()[0])
-      .attr("x2", x.range()[1])
-    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-      .attr("class", "track-inset")
-    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-      .attr("class", "track-overlay")
-      .call(d3.drag()
-          .on("start.interrupt", function() { slider.interrupt(); })
-          .on("start drag", function() { hue(x.invert(d3.event.x)); }));
+    let sliderContainer = svg.append("g")
+      .attr("class", "slider-container");
 
-    slider.insert("g", ".track-overlay")
-      .attr("class", "ticks")
-      .attr("transform", "translate(0," + 18 + ")")
-    .selectAll("text")
-    .data(x.ticks(20))
-    .enter().append("text")
-      .attr("x", x)
-      .attr("text-anchor", "middle")
-      .text(function(d) { return "'" + d%100; });
+    timeAxis(sliderContainer);
+    sliderContainer
+      .attr("transform", "translate(0," + height*0.925 + ")");
 
-    var handle = slider.insert("circle", ".track-overlay")
-        .attr("class", "handle")
-        .attr("r", 9);
+    svg.selectAll(".slider-container text")
+      .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)")
+      .style("fill", "#cccccc");
 
-    slider.transition() // Gratuitous intro!
-        .duration(750)
-        .tween("hue", function() {
-          var i = d3.interpolate(0, 70);
-          return function(t) { hue(i(t)); };
+
+    svg.selectAll(".slider-container line")
+      .style("stroke", "#cccccc");
+
+    // When the input range changes update the circle 
+    slider.on("input", function() {
+      update(+this.value);
+    });
+
+    // Initial starting year
+    let top_ten = [];
+    let country_names = svg.append("g");
+    let bubbles = svg.append("g");
+    let indicator_unit = svg.append("text")
+      .text(curr_year)
+      .attr("x", width*0.95)
+      .attr("y", height*0.49)
+      .style("text-anchor","end") 
+      .attr("startOffset","100%")
+      .attr("font-size", "12px")
+      .attr("fill", "#000000");
+    update(1965);
+
+    // Update elements
+    function update(yr) {
+      curr_year = yr;
+
+      // Clear old texts
+      top_ten = [];
+      country_names
+        .style("fill-opacity", 1)
+        .transition()
+        .duration(1000)
+        .style("fill-opacity", 0);
+      country_names.text("");
+
+      bubbles.selectAll("text").remove();
+
+      // Need to deep copy all circles from bubbles to another container in 
+      // order to save the old circles
+      // Deep copy references: http://stackoverflow.com/a/27443487
+      bubbles.each(function(){
+        let clone = svg.node().appendChild(this.cloneNode(true));
+        d3.select(clone)
+          .attr("class", "clone")
+          .attr("id", "clone-" + i);
+        d3.select(clone)
+          .style("fill-opacity", 1.0)
+          .transition()
+          .duration(1000)
+          .style("fill-opacity", 0.2);
+        d3.select(clone)
+          .transition()
+          .attr("transform", "translate(" + (-width*(Math.random(1)-0.5)) + "," + (-height*0.35) + ")")
+          .duration(3000);
+      });
+
+      bubbles.selectAll("circle").remove();
+
+      // Change sea level
+      sea.transition()
+        .attr("y", height - height * temp2sea(avgtemp[yr]))
+        .attr("height", height * temp2sea(avgtemp[yr]))
+        .duration(1000);
+
+      // Change sky color
+      sky.transition()
+        .attr("fill", d3.hsl(temp2color(avgtemp[yr]), 0.8, 0.7))
+        .duration(1000);
+
+      // Change year title
+      d3.select("#year-display").text(curr_year);
+
+      if (indicator_selection == 1) {  // carbon dioxide
+        let countries = [];
+
+        carbon.forEach(function(country, i) {
+          if (country.Year == yr)
+            countries.push(country);
+
+          countries.sort(function(a, b) {
+            return d3.descending(a.Carbon, b.Carbon);
+          });
         });
 
-    function hue(h) {
-      h = Math.round(h);
-      handle.attr("cx", x(h));
-      console.log(h, x(h));
-      svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+        for (j=0; j<10; j++) {
+          top_ten.push(countries[j]);
+        }
+      } else {  // energy
+        let countries = [];
+
+        energy.forEach(function(country, i) {
+          if (country.Year == yr)
+            countries.push(country);
+
+          countries.sort(function(a, b) {
+            return d3.descending(a.Energy, b.Energy);
+          });
+        });
+
+        for (j=0; j<10; j++) {
+          top_ten.push(countries[j]);
+        }
+      }
+
+      top_ten.forEach(function(country, i) {
+        // Smoke
+        bubbles.append("circle")
+          .attr("cx", 0)
+          .attr("cy", 20)
+          .attr("r", 30)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.6)
+          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.35 + ")");
+        bubbles.append("circle")
+          .attr("cx", 0)
+          .attr("cy", 20)
+          .attr("r", 18)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.4)
+          .attr("transform", "translate(" + (width*0.24 + width*0.06*i) + "," + height*0.39 + ")");
+        bubbles.append("circle")
+          .attr("cx", 0)
+          .attr("cy", 20)
+          .attr("r", 10)
+          .attr("fill", "#333333")
+          .attr("fill-opacity", 0.2)
+          .attr("transform", "translate(" + (width*0.24 + width*0.06*i) + "," + height*0.41 + ")");
+        
+        // Value & unit
+        let value = "";
+        // Convert to values to 2 decimal digits
+        if (indicator_selection == 1) {  // carbon dioxide
+          let val = (Math.round(country.Carbon * 10) / 10).toFixed(2);
+          if (val < 10) value = "0";
+          value += val;
+          indicator_unit.text("(metric tons per capita)");
+        } else {  // energy
+          let val = (Math.round(country.Energy * 1) / 100).toFixed(2);
+          if (val < 10) value = "0";
+          value += val;
+          indicator_unit.text("(x100kg of oil per capita)");
+        }
+        bubbles.append("text")
+          .text(value)
+          .attr("x", width*0.2375 + width*0.06*i)
+          .attr("y", height*0.38)
+          .attr("fill", "#ffffff");
+
+        // Country names
+        country_names.append("text")
+          .text(country.Country)
+          .attr("font-size", 12)
+          .style("text-anchor","end") 
+          .attr("startOffset","100%")
+          .attr("fill", "#cccccc")
+          .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.52 + ")rotate(-45)");
+        country_names
+          .style("fill-opacity", 0)
+          .transition()
+          .duration(1000)
+          .style("fill-opacity", 1);
+      });
     }
   }
 });
