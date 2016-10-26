@@ -1,4 +1,388 @@
 [{
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2012
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2011
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2010
+}, {
+	"Country": "Somaliland",
+	"Temperature": 15.25775,
+	"Year": 2009
+}, {
+	"Country": "Somaliland",
+	"Temperature": 15.216499999999998,
+	"Year": 2008
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2007
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2006
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2005
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2004
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2003
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2002
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2001
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 2000
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1999
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1998
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1997
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1996
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1995
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1994
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1993
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1992
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1991
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1990
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1989
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1988
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1987
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1986
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1985
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1984
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1983
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1982
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1981
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1980
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1979
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1978
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1977
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1976
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1975
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1974
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1973
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1972
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1971
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1970
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1969
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1968
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1967
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1966
+}, {
+	"Country": "Somaliland",
+	"Temperature": 0,
+	"Year": 1965
+},{
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2012
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2011
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2010
+}, {
+	"Country": "South Sudan",
+	"Temperature": 15.25775,
+	"Year": 2009
+}, {
+	"Country": "South Sudan",
+	"Temperature": 15.216499999999998,
+	"Year": 2008
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2007
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2006
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2005
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2004
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2003
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2002
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2001
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 2000
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1999
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1998
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1997
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1996
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1995
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1994
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1993
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1992
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1991
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1990
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1989
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1988
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1987
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1986
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1985
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1984
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1983
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1982
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1981
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1980
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1979
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1978
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1977
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1976
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1975
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1974
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1973
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1972
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1971
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1970
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1969
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1968
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1967
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1966
+}, {
+	"Country": "South Sudan",
+	"Temperature": 0,
+	"Year": 1965
+},{
 	"Country": "Afghanistan",
 	"Temperature": 14.481583333333333,
 	"Year": 2012
