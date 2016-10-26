@@ -260,13 +260,11 @@ $(document).ready(function(){
                 .attr("fill",pressedColor)
     }
 
-
-
     /* 
      * Year title on top
      */
     let year_display = svg.append("text")
-      .text(curr_year)
+      .text("Top 10 countries in " + curr_year)
       .attr("id", "year-display")
       .attr("x", width*0.48)
       .attr("y", height*0.15)
@@ -299,7 +297,6 @@ $(document).ready(function(){
     svg.selectAll(".slider-container text")
       .attr("transform", "translate(" + width*(-0.01) + "," + height*0.02 + ")rotate(-45)")
       .style("fill", "#cccccc");
-
 
     svg.selectAll(".slider-container line")
       .style("stroke", "#cccccc");
@@ -370,10 +367,11 @@ $(document).ready(function(){
         .attr("fill", d3.hsl(temp2color(avgtemp[yr]), 0.8, 0.7))
         .duration(1000);
 
-      // Change year title
-      d3.select("#year-display").text(curr_year);
+      // Year title text
+      let yr_title_txt = "";
 
-      if (indicator_selection == 1) {  // carbon dioxide
+      // Check which indicator is selected
+      if (indicator_selection == 1) {                // carbon dioxide
         let countries = [];
 
         carbon.forEach(function(country, i) {
@@ -388,7 +386,11 @@ $(document).ready(function(){
         for (j=0; j<10; j++) {
           top_ten.push(countries[j]);
         }
-      } else {  // energy
+        top_ten.reverse()
+
+        yr_title_txt += "Who emitted the most carbon dioxide in " + curr_year + "?";
+
+      } else {                                       // energy
         let countries = [];
 
         energy.forEach(function(country, i) {
@@ -403,14 +405,20 @@ $(document).ready(function(){
         for (j=0; j<10; j++) {
           top_ten.push(countries[j]);
         }
+        top_ten.reverse()
+
+        yr_title_txt += "Who consumed the most energy in " + curr_year + "?";
       }
+
+      // Change year title
+      d3.select("#year-display").text(yr_title_txt);
 
       top_ten.forEach(function(country, i) {
         // Smoke
         bubbles.append("circle")
           .attr("cx", 0)
           .attr("cy", 20)
-          .attr("r", 30)
+          .attr("r", 20 + i*2)
           .attr("fill", "#333333")
           .attr("fill-opacity", 0.6)
           .attr("transform", "translate(" + (width*0.25 + width*0.06*i) + "," + height*0.35 + ")");
@@ -436,12 +444,12 @@ $(document).ready(function(){
           let val = (Math.round(country.Carbon * 10) / 10).toFixed(2);
           if (val < 10) value = "0";
           value += val;
-          indicator_unit.text("(metric tons per capita)");
+          indicator_unit.text("(unit: metric tons per capita)");
         } else {  // energy
           let val = (Math.round(country.Energy * 1) / 100).toFixed(2);
           if (val < 10) value = "0";
           value += val;
-          indicator_unit.text("(x100kg of oil per capita)");
+          indicator_unit.text("(unit: x100kg of oil per capita)");
         }
         bubbles.append("text")
           .text(value)
