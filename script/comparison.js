@@ -253,11 +253,11 @@ $(document).ready(function(){
       .text(function(d) {return d;})
 
     function updateButtonColors(button, parent) {
-        parent.selectAll("rect")
-                .attr("fill",defaultColor)
+      parent.selectAll("rect")
+        .attr("fill",defaultColor)
 
-        button.select("rect")
-                .attr("fill",pressedColor)
+      button.select("rect")
+        .attr("fill",pressedColor)
     }
 
     /* 
@@ -272,6 +272,33 @@ $(document).ready(function(){
       .attr("alignment-baseline","central")
       .attr("font-size", "20px")
       .attr("fill", "#000000");
+
+    /* 
+     * World Average Temperature
+     */
+    let world_temp_bg = svg.append("rect")
+      .attr("x", width*0.045)
+      .attr("y", height*0.13)
+      .attr("width", width*0.13)
+      .attr("height", height*0.05)
+      .attr("fill", "#ff0000")
+      .style("fill-opacity", 0.7);
+    let world_temp_caption = svg.append("text")
+      .text("World Average Temperature: ")
+      .attr("x", width*0.11)
+      .attr("y", height*0.145)
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline","central")
+      .attr("fill", "#ffffff");
+    let world_temp = svg.append("text")
+      .text((Math.round(avgtemp[curr_year] * 10) / 10).toFixed(2) + " C")
+      .attr("id", "world-temp")
+      .attr("x", width*0.11)
+      .attr("y", height*0.168)
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline","central")
+      .attr("font-size", "12px")
+      .attr("fill", "#ffffff");
 
     /* 
      * Time slider
@@ -412,6 +439,7 @@ $(document).ready(function(){
 
       // Change year title
       d3.select("#year-display").text(yr_title_txt);
+      d3.select("#world-temp").text((Math.round(avgtemp[curr_year] * 10) / 10).toFixed(2) + " C");
 
       top_ten.forEach(function(country, i) {
         // Smoke
