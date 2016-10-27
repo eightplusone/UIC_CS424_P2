@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	
+							
 					/*Getting the contry names and removing the duplicate names*/
 					var countries_duplicates = new Array();
 					var uniqueVals= new Array();
@@ -7,7 +9,6 @@ $(document).ready(function(){
 							countries_duplicates.push(datao[i].Country);
 						}
 						$.each(countries_duplicates, function(i, el){
-							if($.inArray(el, uniqueVals) === -1) uniqueVals.push(el);
 							if($.inArray(el, uniqueVals) === -1) uniqueVals.push(el);
 						});
 					});
@@ -24,6 +25,9 @@ $(document).ready(function(){
 						temperature_function($("#tags").val());
 						energy_function($("#tags").val());
 						carbon_function($("#tags").val());
+						d3.select("#area1").select("svg").remove();
+						d3.select("#area2").select("svg").remove();
+						d3.select("#area3").select("svg").remove();
 						$("#tohide").hide();
 					});
 
