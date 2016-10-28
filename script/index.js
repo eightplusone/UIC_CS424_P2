@@ -90,7 +90,6 @@ $(document).ready(function(){
 	    var group = canvas.append("g")
 				   .attr("width", 300)
                    .attr("height", 300)
-                   .attr("class", "legendLinear")
                    .attr("transform", "translate("+width*0.1+","+height*0.2+")");			
 				
 	var colorScale1 = d3.scaleQuantize()
@@ -108,8 +107,8 @@ $(document).ready(function(){
                         group.append("rect")
                                 .attr("x","-33%")
                                 .attr("y","-50%")
-                                .attr("width", 300)
-                                .attr("height", 35)
+                                .attr("width", 330)
+                                .attr("height", 50)
                                 .style("fill", "url(#linear-gradient)")
                                 .attr("transform", "rotate(-90)");
 
@@ -130,14 +129,14 @@ $(document).ready(function(){
 
                         group.append('text')
                                 .attr('x', "-49%")
-                                .attr('y', "-32.5%")
+                                .attr('y', "-8%")
                                 .text(maxtemp.toFixed(2))
                                 .style("font-size","13px")
                                 .style("font-weight","bold")
                                 .style("font-family", "Georgia");
 
                         group.append('text')
-                                .attr('x', "-50%")
+                                .attr('x', "-49%")
                                 .attr('y', "38%")
                                 .text("°C")
                                 .style("font-size","14px")
@@ -290,8 +289,8 @@ $(document).ready(function(){
                         group.append("rect")
                                 .attr("x","-33%")
                                 .attr("y","-50%")
-                                .attr("width", 300)
-                                .attr("height", 35)
+                                .attr("width", 330)
+                                .attr("height", 60)
                                 .style("fill", "url(#linear-gradient)")
                                 .attr("transform", "rotate(-90)");
 
@@ -312,7 +311,7 @@ $(document).ready(function(){
 
                         group.append('text')
                                 .attr('x', "-49%")
-                                .attr('y', "-32.5%")
+                                .attr('y', "-8%")
                                 .text(maxtemp.toFixed(2))
                                 .style("font-size","13px")
                                 .style("font-weight","bold")
@@ -516,6 +515,7 @@ $(document).ready(function(){
                             });			
 					
 			canvas.append("g")
+					  .attr("id","circleadd")
 					  .selectAll("circle")
 					  .data(json.features
 						 .sort(function(a, b) { return b.properties.value - a.properties.value; }))
@@ -591,6 +591,7 @@ $(document).ready(function(){
 					.on("start.interrupt", function() { slider.interrupt(); })
 					.on("start drag", function() { handle.attr("cx",x(Math.round(x.invert(d3.event.x))));
 												   year = Math.round(x.invert(d3.event.x)); 	//= year on the slider
+												   d3.select("svg").selectAll("#circleadd").remove();
 												   rerender(year); }));			
 
 	slider.insert("g", ".track-overlay")
@@ -616,6 +617,7 @@ $(document).ready(function(){
  
   function rerender(x){
 		let selectedValue = $("#selectIndicator").find("option:selected").text();
+		
 		render(x,selectedValue);
 	}
 	
