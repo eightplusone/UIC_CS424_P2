@@ -1,17 +1,15 @@
 html, body {
-
-  font-family: "Century Gothic";
-  background-color: black;
 }
 
 .menu {
   height: 5%;
   padding: 10px;
+  background-color: white;
 }
 
 .main {
   height: 95%;
- 
+  background-color: white; 
  }
  
 .ticks {
@@ -76,7 +74,6 @@ input[type='range']::-webkit-slider-thumb {
             text-align: center;
             padding: 2px;
             font-size: 12pt;
-            font-family: "Century Gothic";
             color: white;
         }
 
@@ -102,11 +99,9 @@ input[type='range']::-webkit-slider-thumb {
 
  #tohide{
             color:antiquewhite;
-            font-family: "Century Gothic";
             font-size: 15px;
         }
 #headings{
             color: greenyellow;
-            font-family:"Century Gothic";
             font-size: 20px;
         }		

@@ -283,6 +283,7 @@ $(document).ready(function(){
       .attr("height", height*0.05)
       .attr("fill", "#ff0000")
       .style("fill-opacity", 0.7);
+
     let world_temp_caption = svg.append("text")
       .text("World Average Temperature: ")
       .attr("x", width*0.11)
@@ -290,6 +291,7 @@ $(document).ready(function(){
       .attr("text-anchor", "middle")
       .attr("alignment-baseline","central")
       .attr("fill", "#ffffff");
+      
     let world_temp = svg.append("text")
       .text((Math.round(avgtemp[curr_year] * 10) / 10).toFixed(2) + " C")
       .attr("id", "world-temp")
