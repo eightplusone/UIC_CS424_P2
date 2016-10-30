@@ -1123,7 +1123,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "French Southern and Antarctic Lands"
+			"name": "French Southern And Antarctic Lands"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -1752,7 +1752,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "The Bahamas"
+			"name": "Bahamas"
 		},
 		"geometry": {
 			"type": "MultiPolygon",
@@ -5052,7 +5052,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Falkland Islands"
+			"name": "Falkland Islands (Islas Malvinas)"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -11873,7 +11873,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "East Timor"
+			"name": "Timor Leste"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -11897,7 +11897,7 @@
 	}, {
 		"type": "Feature",
 		"properties": {
-			"name": "Trinidad and Tobago"
+			"name": "Trinidad And Tobago"
 		},
 		"geometry": {
 			"type": "Polygon",

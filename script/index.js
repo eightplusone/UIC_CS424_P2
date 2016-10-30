@@ -320,7 +320,7 @@ $(document).ready(function(){
                         group.append('text')
                                 .attr('x', "-50%")
                                 .attr('y', "38%")
-                                .text("°C")
+                                .text("Kg Oil Equivalent per Capita")
                                 .style("font-size","14px")
                                 .style("font-weight","bold")
                                 .style("font-family", "Georgia")
