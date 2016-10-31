@@ -46,7 +46,7 @@ $(document).ready(function(){
     }  
 	
 	function render(year,item){
-	    if(item=="Temperature(degree Celcius)")
+	    if(item=="Temperature(degree Celsius)")
 		{
 			rendertemperature(year);	//temperature
 		}
