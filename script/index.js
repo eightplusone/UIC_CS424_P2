@@ -11,28 +11,51 @@ $(document).ready(function(){
       .attr("height", "100%")
       .attr("viewBox","0 0 " + Math.min(width,height) + " " + Math.min(width,height))
       .attr("preserveAspectRatio","xMinYMin");
-    
-    let intro_div = svg.append("line")
-        .attr("x1", width*0.35)
-        .attr("y1", height*0.1)
-        .attr("x2", width*0.35)
-        .attr("y2", height*0.8)
-        .attr("stroke-width", 1)
-        .attr("stroke", "black");
 
     let intro_txt = svg.append("foreignObject")
-        .attr("x", 0)
-        .attr("y", height*0.05)
-        .attr("width", width*0.35)
-        .attr("height", height*0.9)
+        .attr("x", width*0.02)
+        .attr("y", height*0.02)
+        .attr("width", width*0.30)
+        .attr("height", height*0.8)
         .append("xhtml:body")
             .style("font-size", "14px")
-            .style("margin", "10px")
+            .style("margin", "0px")
+            .style("padding", "0px 25px 0px 25px")
             .style("color", "#cccccc")
-            .html("<h3>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3>"
+            .style("overflow-y", "scroll")
+            .style("background-color", "#333333")
+            .html("<h3 style='font-weight: 300'>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3>"
                 + "<h5 style='color: #00aaaa'>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h5>"
-                + "<p>In this project, we attempt to raise people's awareness on"
-                + " the issue of global warming by visualizing </p>"
+                + "<p style='text-align: justify'>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;In this project, we attempt to raise people's awareness on "
+                + "the issue of global warming by visualizing the world's temperature "
+                + "along with the amount of carbon consumption and carbon dioxide emissions "
+                + "that each country has used or produced each year from 1965 to 2012. "
+                + "We provide 3 visualizations, which are linked on top of this page: <br/>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;1. A world map, the one that you are "
+                + "currently seeing, gives you an overview of how the world is "
+                + "changing year by year. For example, a big part of Europe became "
+                + "much warmer in 1995 compared to 1965. You can select an indicator "
+                + "and a year at the bottom of this page to see the changes. "
+                + "Hovering your mouse over a country on the map will give you "
+                + "more specific information about that country.<br/>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;2. You can find detailed data of each "
+                + "country in our second visualization. After typing a country name "
+                + "in the search box and click the search button, three pie charts "
+                + "will be displayed. Each chart provides a 50-year view on one "
+                + "aspect of the selected country -- Temperature, Energy Consumption, "
+                + "or Carbon Emission. In one chart, each arc represents a year, "
+                + "and each layer represents a decade. By layering the decades, "
+                + "we can immediately see the change of a country 10 years after. "
+                + "For example, China has been successfully brought its average "
+                + "temperature down during 2001 - 2011. However, they are doing "
+                + "poorly in controlling their energy consumption and carbon emission. "
+                + "These two indicators are reaching their peaks in the few recent years. <br/>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;3. Our last visualization is an "
+                + "interactive board which shows the top ten countries that "
+                + "consumed the most energy or emitted the most carbon dioxide "
+                + "each year. "
+                + "</p>"
             );
 
 	  
