@@ -11,6 +11,25 @@ $(document).ready(function(){
       .attr("height", "100%")
       .attr("viewBox","0 0 " + Math.min(width,height) + " " + Math.min(width,height))
       .attr("preserveAspectRatio","xMinYMin");
+    
+    let intro_div = svg.append("line")
+        .attr("x1", width*0.35)
+        .attr("y1", height*0.1)
+        .attr("x2", width*0.35)
+        .attr("y2", height*0.8)
+        .attr("stroke-width", 1)
+        .attr("stroke", "black");
+
+    let intro_txt = svg.append("foreignObject")
+        .attr("x", 0)
+        .attr("y", height*0.05)
+        .attr("width", width*0.35)
+        .attr("height", height*0.9)
+        .append("xhtml:body")
+            .style("font-size", "14px")
+            .style("margin", "10px")
+            .html("<h3>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3><h4>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h4><p>blah blah</p>");
+
 	  
 	var div = d3.select("body").append("div")
                     .attr("class", "tooltip")
@@ -80,18 +99,23 @@ $(document).ready(function(){
 	     
       var path = d3.geoPath()
 					.projection(projection);
-					
+
+
+	let canvas_width = width*0.625,
+        canvas_height = height*0.65;
+
       var canvas = svg.append("g")
 				.attr("id","remodel")
-				.attr("width",width)
-				.attr("height","80%")
-				.attr("transform","translate("+width*0.2+","+height*0.35+")");
+				.attr("width", width)
+				.attr("height", height)
+				.attr("transform","translate("+ (width - canvas_width) +","+ (height - canvas_height) +")");
 				
 	    var group = canvas.append("g")
-				   .attr("width", 300)
-                   .attr("height", 300)
-                   .attr("transform", "translate("+width*0.1+","+height*0.2+")");			
-				
+				   .attr("width", canvas_width)
+                   .attr("height", canvas_height);
+                   // Why waste more space?
+                   //.attr("transform", "translate("+width*0.1+","+height*0.2+")");	
+
 	var colorScale1 = d3.scaleQuantize()
                              .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
 								 
@@ -105,12 +129,14 @@ $(document).ready(function(){
                                 .attr("y2", "0%");
 
                         group.append("rect")
-                                .attr("x","-33%")
-                                .attr("y","-50%")
-                                .attr("width", 330)
-                                .attr("height", 50)
+                                .attr("x", -height*0.53)
+                                .attr("y", 0)
+                                .attr("width", width*0.15)
+                                .attr("height", height*0.06)
                                 .style("fill", "url(#linear-gradient)")
-                                .attr("transform", "rotate(-90)");
+                                .attr("transform", "rotate(-90)");  // rotating counterclockwise makes things move 
+                                                                    // upward instead of downward (thus negative x-
+                                                                    // value). I recommend to rotate clockwise next time
 
                         linearGradient.selectAll("stop")
                                 .data( colorScale1.range() )
@@ -120,29 +146,31 @@ $(document).ready(function(){
 
                         //adding text to legends
                         group.append('text')
-                                .attr('x', "-49%")
-                                .attr('y', "31.5%")
+                                .attr('x', width*0.017)
+                                .attr('y', height*0.51)
                                 .text(mintemp.toFixed(2))
-                                .style("font-size","13px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia");
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("fill", "#333333")
+                                .style("font-size","12px");
 
                         group.append('text')
-                                .attr('x', "-49%")
-                                .attr('y', "-8%")
+                                .attr('x', width*0.016)
+                                .attr('y', height*0.27)
                                 .text(maxtemp.toFixed(2))
-                                .style("font-size","13px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia");
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("fill", "#dddddd")
+                                .style("font-size","12px");
 
                         group.append('text')
-                                .attr('x', "-49%")
-                                .attr('y', "38%")
+                                .attr('x', width*0.016)
+                                .attr('y', height*0.55)
                                 .text("°C")
-                                .style("font-size","14px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia")
-                                .style('fill', 'white');
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("font-size","12px")
+                                .style('fill', '#000000');
 				    
 				
 		d3.json("./data/world_countries.json", function(error,json) {
@@ -208,8 +236,9 @@ $(document).ready(function(){
                         .duration(200)
                         .style("opacity", .9);
                 div.html("Year: "+ d.properties.year+"<br>Avg Temp: " +d.properties.value.toFixed(2)+"<br>Country: "+d.properties.name)
-						.style("left", width*0.10)
-                        .style("top", height*0.11);
+						.style("left", width*0.80)
+                        .style("top", height*0.08)
+                        .style("color", "black");
 						
             }
 
@@ -262,17 +291,19 @@ $(document).ready(function(){
       var path = d3.geoPath()
 					.projection(projection);
 					
+      let canvas_width = width*0.625,
+        canvas_height = height*0.65;
+
       var canvas = svg.append("g")
-				.attr("id","remodel")
-				.attr("width",width)
-				.attr("height","80%")
-				.attr("transform","translate("+width*0.2+","+height*0.35+")");
-				
-	 var group = canvas.append("g")
-				   .attr("width", 300)
-                   .attr("height", 300)
-                   .attr("class", "legendLinear")
-                   .attr("transform", "translate("+width*0.1+","+height*0.2+")");			
+                .attr("id","remodel")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("transform","translate("+ (width - canvas_width) +","+ (height - canvas_height) +")");
+                
+        var group = canvas.append("g")
+                   .attr("width", canvas_width)
+                   .attr("height", canvas_height);
+                   //.attr("transform", "translate("+width*0.1+","+height*0.2+")");			
 				
 	var colorScale1 = d3.scaleQuantize()
                              .range(["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"]);
@@ -287,10 +318,10 @@ $(document).ready(function(){
                                 .attr("y2", "0%");
 
                         group.append("rect")
-                                .attr("x","-33%")
-                                .attr("y","-50%")
-                                .attr("width", 330)
-                                .attr("height", 60)
+                                .attr("x", -height*0.53)
+                                .attr("y", 0)
+                                .attr("width", width*0.15)
+                                .attr("height", height*0.06)
                                 .style("fill", "url(#linear-gradient)")
                                 .attr("transform", "rotate(-90)");
 
@@ -302,22 +333,25 @@ $(document).ready(function(){
 
                         //adding text to legends
                         group.append('text')
-                                .attr('x', "-49%")
-                                .attr('y', "31.5%")
+                                .attr('x', width*0.017)
+                                .attr('y', height*0.51)
                                 .text(mintemp.toFixed(2))
-                                .style("font-size","13px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia");
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("fill", "#333333")
+                                .style("font-size","12px");
 
                         group.append('text')
-                                .attr('x', "-49%")
-                                .attr('y', "-8%")
-                                .text(maxtemp.toFixed(2))
-                                .style("font-size","13px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia");
+                                .attr('x', width*0.016)
+                                .attr('y', height*0.27)
+                                .text((Math.round(maxtemp) / 1000).toFixed(2))
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("fill", "#dddddd")
+                                .style("font-size","12px");
 
                         group.append('text')
+<<<<<<< HEAD
                                 .attr('x', "-50%")
                                 .attr('y', "38%")
                                 .text("Kg Oil Equivalent per Capita")
@@ -325,6 +359,15 @@ $(document).ready(function(){
                                 .style("font-weight","bold")
                                 .style("font-family", "Georgia")
                                 .style('fill', 'white');
+=======
+                                .attr('x', width*0.016)
+                                .attr('y', height*0.55)
+                                .text("°C")
+                                .attr("text-anchor", "middle")
+                                .attr("alignment-baseline","central")
+                                .style("font-size","12px")
+                                .style('fill', '#000000');
+>>>>>>> origin/master
 				
 				
 		d3.json("./data/world_countries.json", function(error,json) {
@@ -394,8 +437,9 @@ $(document).ready(function(){
                         .duration(200)
                         .style("opacity", .9);
                 div.html("Year: "+ d.properties.year+"<br>Energy Consumption: " +parseFloat(d.properties.value)/*.toFixed(2)*/+"<br>Country: "+d.properties.name)
-						.style("left", width*0.10)
-                        .style("top", height*0.11);
+						.style("left", width*0.80)
+                        .style("top", height*0.08)
+                        .style("color", "black");
 						
             }
 
@@ -447,14 +491,15 @@ $(document).ready(function(){
 	     
       var path = d3.geoPath()
 					.projection(projection);
-					
-      var canvas = svg.append("g")
-				.attr("id","remodel")
-				.attr("width",width)
-				.attr("height","80%")
-				.attr("transform","translate("+width*0.2+","+height*0.35+")");
 				
-	
+	let canvas_width = width*0.625,
+        canvas_height = height*0.65;
+
+      var canvas = svg.append("g")
+                .attr("id","remodel")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("transform","translate("+ (width - canvas_width) +","+ (height - canvas_height) +")");
             
 				
 		d3.json("./data/world_countries.json", function(error,json) {
@@ -550,8 +595,9 @@ $(document).ready(function(){
                         .duration(200)
                         .style("opacity", .9);
                 div.html("Year: "+ d.properties.year+"<br>Carbon Emissions: " +parseFloat(d.properties.value)/*.toFixed(2)*/+"<br>Country: "+d.properties.name)
-						.style("left", width*0.10)
-                        .style("top", height*0.11);
+						.style("left", width*0.80)
+                        .style("top", height*0.08)
+                        .style("color", "black");
 						
             }
 
@@ -577,7 +623,7 @@ $(document).ready(function(){
 		
 	var slider = svg.append("g")			//appended to svg
 				.attr("class", "slider")
-				.attr("transform", "translate(" + width*0.35 + "," + height*0.95 + ")");
+				.attr("transform", "translate(" + width*0.40 + "," + height*0.95 + ")");
 
 	slider.append("line")
 			.attr("class", "track")
@@ -603,7 +649,7 @@ $(document).ready(function(){
 		.attr("x", x)
 		.attr("text-anchor", "middle")
 		.text(function(d) { return d; })
-		.attr("fill","white");
+		.attr("fill","#000000");
 
 	var handle = slider.insert("circle", ".track-overlay")
 		.attr("class", "handle")

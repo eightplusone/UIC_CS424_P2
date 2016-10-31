@@ -1,19 +1,24 @@
 html, body {
-
-  font-family: "Century Gothic";
-  background-color: black;
+  width: 100%;
+  height: 100%;
 }
 
 .menu {
   height: 5%;
   padding: 10px;
+  background-color: white;
 }
 
 .main {
   height: 95%;
- 
+  background-color: white; 
  }
  
+.main-country {
+  height: 95%;
+  background-color: black; 
+}
+
 .ticks {
   font: 10px sans-serif;
   color: #fff;
@@ -76,7 +81,6 @@ input[type='range']::-webkit-slider-thumb {
             text-align: center;
             padding: 2px;
             font-size: 12pt;
-            font-family: "Century Gothic";
             color: white;
         }
 
@@ -102,11 +106,9 @@ input[type='range']::-webkit-slider-thumb {
 
  #tohide{
             color:antiquewhite;
-            font-family: "Century Gothic";
             font-size: 15px;
         }
 #headings{
             color: greenyellow;
-            font-family:"Century Gothic";
             font-size: 20px;
         }		
