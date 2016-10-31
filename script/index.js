@@ -28,7 +28,11 @@ $(document).ready(function(){
         .append("xhtml:body")
             .style("font-size", "14px")
             .style("margin", "10px")
-            .html("<h3>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3><h4>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h4><p>blah blah</p>");
+            .style("color", "#cccccc")
+            .html("<h3>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3>"
+                + "<h4>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h4>"
+                + "<p></p>"
+            );
 
 	  
 	var div = d3.select("body").append("div")
@@ -170,7 +174,7 @@ $(document).ready(function(){
                                 .attr("text-anchor", "middle")
                                 .attr("alignment-baseline","central")
                                 .style("font-size","12px")
-                                .style('fill', '#000000');
+                                .style('fill', '#ffffff');
 				    
 				
 		d3.json("./data/world_countries.json", function(error,json) {
@@ -238,7 +242,7 @@ $(document).ready(function(){
                 div.html("Year: "+ d.properties.year+"<br>Avg Temp: " +d.properties.value.toFixed(2)+"<br>Country: "+d.properties.name)
 						.style("left", width*0.80)
                         .style("top", height*0.08)
-                        .style("color", "black");
+                        .style("color", "white");
 						
             }
 
@@ -354,11 +358,11 @@ $(document).ready(function(){
                         group.append('text')
                                 .attr('x', width*0.016)
                                 .attr('y', height*0.55)
-                                .text("Kg Oil Equivalent per Capita")
+                                .text("x 100Kg Oil Equivalent per Capita")
                                 .attr("text-anchor", "middle")
                                 .attr("alignment-baseline","central")
                                 .style("font-size","12px")
-                                .style('fill', '#000000');
+                                .style('fill', '#ffffff');
 
 				
 				
@@ -431,7 +435,7 @@ $(document).ready(function(){
                 div.html("Year: "+ d.properties.year+"<br>Energy Consumption: " +parseFloat(d.properties.value)/*.toFixed(2)*/+"<br>Country: "+d.properties.name)
 						.style("left", width*0.80)
                         .style("top", height*0.08)
-                        .style("color", "black");
+                        .style("color", "white");
 						
             }
 
@@ -589,7 +593,7 @@ $(document).ready(function(){
                 div.html("Year: "+ d.properties.year+"<br>Carbon Emissions: " +parseFloat(d.properties.value)/*.toFixed(2)*/+"<br>Country: "+d.properties.name)
 						.style("left", width*0.80)
                         .style("top", height*0.08)
-                        .style("color", "black");
+                        .style("color", "white");
 						
             }
 
@@ -641,7 +645,7 @@ $(document).ready(function(){
 		.attr("x", x)
 		.attr("text-anchor", "middle")
 		.text(function(d) { return d; })
-		.attr("fill","#000000");
+		.attr("fill","white");
 
 	var handle = slider.insert("circle", ".track-overlay")
 		.attr("class", "handle")
