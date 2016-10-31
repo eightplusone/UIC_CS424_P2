@@ -30,8 +30,9 @@ $(document).ready(function(){
             .style("margin", "10px")
             .style("color", "#cccccc")
             .html("<h3>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3>"
-                + "<h4>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h4>"
-                + "<p></p>"
+                + "<h5 style='color: #00aaaa'>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h5>"
+                + "<p>In this project, we attempt to raise people's awareness on"
+                + " the issue of global warming by visualizing </p>"
             );
 
 	  
@@ -50,7 +51,7 @@ $(document).ready(function(){
     }  
 	
 	function render(year,item){
-	    if(item=="Temperature(degree Celsius)")
+	    if(item=="Temperature(degree Celcius)")
 		{
 			rendertemperature(year);	//temperature
 		}
@@ -160,7 +161,7 @@ $(document).ready(function(){
 
                         group.append('text')
                                 .attr('x', width*0.016)
-                                .attr('y', height*0.27)
+                                .attr('y', height*0.28)
                                 .text(maxtemp.toFixed(2))
                                 .attr("text-anchor", "middle")
                                 .attr("alignment-baseline","central")
@@ -348,7 +349,7 @@ $(document).ready(function(){
 
                         group.append('text')
                                 .attr('x', width*0.016)
-                                .attr('y', height*0.27)
+                                .attr('y', height*0.28)
                                 .text((Math.round(maxtemp) / 1000).toFixed(2))
                                 .attr("text-anchor", "middle")
                                 .attr("alignment-baseline","central")
