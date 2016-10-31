@@ -27,18 +27,19 @@ $(document).ready(function(){
             .html("<h3 style='font-weight: 300'>Global Warming Visualized Through Temperature, Energy Consumption, and Carbon Emissions</h3>"
                 + "<h5 style='color: #00aaaa'>by Aditi Mallavarapu, Aryadip Sarkar, and Hai Tran</h5>"
                 + "<p style='text-align: justify'>"
+                + "<font color='#dddd00'>(Click anywhere on this panel to open this in a new tab)</font><br/><br/>"
                 + "&nbsp;&nbsp;&nbsp;&nbsp;In this project, we attempt to raise people's awareness on "
                 + "the issue of global warming by visualizing the world's temperature "
-                + "along with the amount of carbon consumption and carbon dioxide emissions "
+                + "along with the amount of energy consumption and carbon dioxide emissions "
                 + "that each country has used or produced each year from 1965 to 2012. "
-                + "We provide 3 visualizations, which are linked on top of this page: <br/>"
+                + "We provide 3 visualizations, which are linked on top of this page: <br/><br/>"
                 + "&nbsp;&nbsp;&nbsp;&nbsp;1. A world map, the one that you are "
                 + "currently seeing, gives you an overview of how the world is "
                 + "changing year by year. For example, a big part of Europe became "
                 + "much warmer in 1995 compared to 1965. You can select an indicator "
                 + "and a year at the bottom of this page to see the changes. "
                 + "Hovering your mouse over a country on the map will give you "
-                + "more specific information about that country.<br/>"
+                + "more specific information about that country.<br/><br/>"
                 + "&nbsp;&nbsp;&nbsp;&nbsp;2. You can find detailed data of each "
                 + "country in our second visualization. After typing a country name "
                 + "in the search box and click the search button, three pie charts "
@@ -50,13 +51,31 @@ $(document).ready(function(){
                 + "For example, China has been successfully brought its average "
                 + "temperature down during 2001 - 2011. However, they are doing "
                 + "poorly in controlling their energy consumption and carbon emission. "
-                + "These two indicators are reaching their peaks in the few recent years. <br/>"
+                + "These two indicators are reaching their peaks in the few recent years.<br/><br/>"
                 + "&nbsp;&nbsp;&nbsp;&nbsp;3. Our last visualization is an "
                 + "interactive board which shows the top ten countries that "
                 + "consumed the most energy or emitted the most carbon dioxide "
-                + "each year. "
+                + "each year. When we choose an indicator and select a year, "
+                + "the top 10 will be updated. Accordingly, sky color and "
+                + "sea level will change to give a sense of global warming. <br/>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;With this visualization, we attempt to suggest some "
+                + "potential factors that may invoke audience's further thoughts: "
+                + "could global warming possibly affect sea level and air quality? "
+                + "Which countries are using too much energy or producing too "
+                + "much pollution? If they could control such factors, would "
+                + "the world's average temperature go down? <br/><br/>"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Hopefully our work will be able to help "
+                + "people see the danger of global warming and the threats "
+                + "caused by energy consumption and carbon dioxide emissions. "
+                + "The responsibility belongs to every one of us."
                 + "</p>"
-            );
+            )
+            .on("click",function(d){
+                window.open(
+                  'intro.html',
+                  '_blank' // <- This is what makes it open in a new window.
+                );
+            });
 
 	  
 	var div = d3.select("body").append("div")
