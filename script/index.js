@@ -100,7 +100,6 @@ $(document).ready(function(){
       var path = d3.geoPath()
 					.projection(projection);
 
-
 	let canvas_width = width*0.625,
         canvas_height = height*0.65;
 
@@ -111,6 +110,7 @@ $(document).ready(function(){
 				.attr("transform","translate("+ (width - canvas_width) +","+ (height - canvas_height) +")");
 				
 	    var group = canvas.append("g")
+					.attr("id","remodel")
 				   .attr("width", canvas_width)
                    .attr("height", canvas_height);
                    // Why waste more space?
@@ -301,6 +301,7 @@ $(document).ready(function(){
                 .attr("transform","translate("+ (width - canvas_width) +","+ (height - canvas_height) +")");
                 
         var group = canvas.append("g")
+				   .attr("id","remodel")
                    .attr("width", canvas_width)
                    .attr("height", canvas_height);
                    //.attr("transform", "translate("+width*0.1+","+height*0.2+")");			
@@ -351,23 +352,14 @@ $(document).ready(function(){
                                 .style("font-size","12px");
 
                         group.append('text')
-<<<<<<< HEAD
-                                .attr('x', "-50%")
-                                .attr('y', "38%")
-                                .text("Kg Oil Equivalent per Capita")
-                                .style("font-size","14px")
-                                .style("font-weight","bold")
-                                .style("font-family", "Georgia")
-                                .style('fill', 'white');
-=======
                                 .attr('x', width*0.016)
                                 .attr('y', height*0.55)
-                                .text("°C")
+                                .text("Kg Oil Equivalent per Capita")
                                 .attr("text-anchor", "middle")
                                 .attr("alignment-baseline","central")
                                 .style("font-size","12px")
                                 .style('fill', '#000000');
->>>>>>> origin/master
+
 				
 				
 		d3.json("./data/world_countries.json", function(error,json) {
