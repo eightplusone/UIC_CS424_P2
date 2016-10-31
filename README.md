@@ -3,6 +3,8 @@
 
 [Link to the detailed report](https://docs.google.com/a/uic.edu/document/d/1VdZcQ8VZqEVfMal4ewB777f5IXSPrcSdHLkF0nm9BwY/edit?usp=sharing)
 
+Feature Hightlights Video:
+
 [![Feature Highlights](http://img.youtube.com/vi/tyjmWX7gJnc/0.jpg)](https://youtu.be/tyjmWX7gJnc "Feature Highlights")
 
 In this project, we attempt to raise people's awareness on the issue of global warming by visualizing the world's temperature along with the amount of energy consumption and carbon dioxide emissions that each country has used or produced each year from 1965 to 2012. We provide 3 visualizations, which are linked on top of this page:
