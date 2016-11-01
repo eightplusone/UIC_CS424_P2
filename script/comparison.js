@@ -417,7 +417,7 @@ $(document).ready(function(){
         }
         top_ten.reverse()
 
-        yr_title_txt += "Who emitted the most carbon dioxide in " + curr_year + "?";
+        yr_title_txt += "Which countries emitted the most carbon dioxide in " + curr_year + "?";
 
       } else {                                       // energy
         let countries = [];
@@ -436,7 +436,7 @@ $(document).ready(function(){
         }
         top_ten.reverse()
 
-        yr_title_txt += "Who consumed the most energy in " + curr_year + "?";
+        yr_title_txt += "Which countries consumed the most energy in " + curr_year + "?";
       }
 
       // Change year title
