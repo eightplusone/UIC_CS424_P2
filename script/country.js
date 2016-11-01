@@ -177,7 +177,7 @@ $(document).ready(function(){
                             div.transition()
                                     .duration(200)
                                     .style("opacity", .9)
-                            div.html("Year: "+ getyear(d)+"<br>Avg Temp: " +gettemperature(d))
+                            div.html("Year: "+ getyear(d)+"<br>Avg Temp: " +gettemperature(d).toFixed(2))
                                     .style("left", (190) + "px")
                                     .style("top", (540) + "px");
 
@@ -416,7 +416,7 @@ $(document).ready(function(){
                             div.transition()
                                     .duration(200)
                                     .style("opacity", .9);
-                            div.html("Year: " + getyear(d) + "<br>Avg Energy: " + getenergy(d))
+                            div.html("Year: " + getyear(d) + "<br>Avg Energy: " + getenergy(d).toFixed(2))
                                     .style("left", (670) + "px")
                                     .style("top", (540) + "px");
                         }
@@ -574,7 +574,7 @@ $(document).ready(function(){
                             div.transition()
                                     .duration(200)
                                     .style("opacity", .9);
-                            div.html("Year: " + getyear(d) + "<br>Carbon Emissions: " + getcarbon(d))
+                            div.html("Year: " + getyear(d) + "<br>Carbon Emissions: " + getcarbon(d).toFixed(2))
                                     .style("left", (1130) + "px")
                                     .style("top", (540) + "px");
 
